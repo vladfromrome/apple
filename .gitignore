@@ -13,3 +13,16 @@ dist
 /.project
 /RUNNING_PID
 /.settings
+bin/
+/db
+.eclipse
+/lib/
+/logs/
+/modules
+/target
+test-result
+server.pid
+*.iml
+*.eml
+/dist/
+.cache
