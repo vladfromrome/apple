@@ -16,7 +16,6 @@ dist
 bin/
 /db
 .eclipse
-/lib/
 /logs/
 /modules
 /target
