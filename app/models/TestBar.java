@@ -20,7 +20,7 @@ public class TestBar extends Model {
     public String id;
 
     public String name;
-    public static String viewBars(){
+    public static String getBars(){
         List<TestBar> bars = new Model.Finder(String.class, TestBar.class).all();
         String s="<ul>";
         for (TestBar b:bars){
