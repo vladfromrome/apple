@@ -4,6 +4,7 @@ import play.db.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +20,14 @@ public class TestBar extends Model {
     public String id;
 
     public String name;
-
+    public static String viewBars(){
+        List<TestBar> bars = new Model.Finder(String.class, TestBar.class).all();
+        String s="<ul>";
+        for (TestBar b:bars){
+           s+="<li>"+b.name+"</li>";
+        }
+        s+="</ul>";
+        return s;
+    }
 }
 

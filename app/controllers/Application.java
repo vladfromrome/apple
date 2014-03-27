@@ -12,6 +12,7 @@ public class Application extends Controller {
     public static Result index() {
         return ok(views.html.index.render("Your new application is ready."));
     }
+
     public static Result addBar(){
         TestBar bar = Form.form(TestBar.class).bindFromRequest().get();
         bar.save();
