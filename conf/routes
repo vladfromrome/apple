@@ -3,8 +3,9 @@
 # ~~~~
 
 # Home page
-GET        /                    controllers.Application.index()
-POST       /bars                controllers.Application.addBar()
+GET         /                    controllers.Application.index()
+POST        /bars                controllers.Application.addBar()
+GET         /orm                 controllers.OrmTest.populateOrmtest()
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file        controllers.Assets.at(path="/public", file)

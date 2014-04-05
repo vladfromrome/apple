@@ -17,11 +17,14 @@ import java.util.List;
 public class TestBar extends Model {
 
     @Id
-    public String id;
+    public Long id;
+
 
     public String name;
+
+
     public static String getBars(){
-        List<TestBar> bars = new Model.Finder(String.class, TestBar.class).all();
+        List<TestBar> bars = new Model.Finder(Long.class, TestBar.class).all();
         String s="<ul>";
         for (TestBar b:bars){
            s+="<li>"+b.name+"</li>";

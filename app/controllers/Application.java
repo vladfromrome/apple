@@ -1,11 +1,17 @@
 package controllers;
 
+import com.avaje.ebean.Ebean;
 import models.TestBar;
+import models.ormtest.Product;
+import models.ormtest.Tag;
 import play.*;
 import play.data.Form;
 import play.mvc.*;
 
 import views.html.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Application extends Controller {
 
@@ -18,5 +24,9 @@ public class Application extends Controller {
         bar.save();
         return redirect("/");
     }
+
+
+
+
 
 }
