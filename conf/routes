@@ -4,8 +4,8 @@
 
 # Home page
 GET         /                    controllers.Application.index()
-POST        /bars                controllers.Application.addBar()
-GET         /orm                 controllers.OrmTest.populateOrmtest()
+POST        /bars/                controllers.Application.addBar()
+GET         /orm/                 controllers.OrmTest.populateOrmtest()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.at(path="/public", file)
