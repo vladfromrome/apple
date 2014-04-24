@@ -69,6 +69,7 @@ public class FBHelper {
     public static void logOut() {
         Context.current().response().discardCookie("fbToken");
         Context.current().response().discardCookie("appUser");
+        Logger.info("Logged out successfully.");
     }
 
     public static User loadNewUser(facebook4j.User fbUser) throws FacebookException {
@@ -79,6 +80,19 @@ public class FBHelper {
     public static void loadFriends() {
         Facebook fb = getFBInstance();
 
+    }
+
+    public static String getAppStatus(){
+        String s = "";
+        Facebook fb = getFBInstance();
+        User user;
+        try {
+            user = User.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
+            s = "You are logged in as "+user.profile.name;
+        }   catch (Exception e)                                                                           {
+            return "You are not authenticated.";
+        }
+        return s;
     }
 
 }

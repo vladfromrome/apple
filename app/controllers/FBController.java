@@ -23,6 +23,9 @@ import java.util.List;
  */
 public class FBController extends Controller {
 
+    private static final String logOutUrl = "/status";
+    private static final String logInUrl = "/status";
+
     public static Result cleanDB() {
         Ebean.delete(User.FIND.all());
         return ok("DB is clean.");
@@ -40,9 +43,9 @@ public class FBController extends Controller {
                 Logger.info("fb error: " + e.getErrorMessage());
                 return ok("fb error: " + e.getErrorMessage());
             }
-            return ok("fb: You are authenticated!");
+            return redirect(logInUrl);
         }
-        return redirect("/");
+        return redirect(logInUrl);
     }
 
     public static Result postMsg() {
@@ -67,8 +70,8 @@ public class FBController extends Controller {
     }
 
     public static Result logOut() {
-        response().discardCookie("fbToken");
-        return redirect("/");
+        FBHelper.logOut();
+        return redirect(logOutUrl);
     }
 
 }

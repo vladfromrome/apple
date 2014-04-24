@@ -25,7 +25,9 @@ public class Application extends Controller {
         return redirect("/");
     }
 
-
+    public static Result status(){
+        return ok(views.html.status.render());
+    }
 
 
 
