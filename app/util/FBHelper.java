@@ -4,6 +4,9 @@ import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.auth.AccessToken;
+import models.fbtest.User;
+import play.Logger;
+import play.mvc.Http.Context;
 
 /**
  * User: Vladimir Romanov
@@ -28,18 +31,54 @@ public class FBHelper {
         Facebook facebook = getSimpleFBInstance();
         //String fbToken=play.mvc.Http.Context.current().request().cookies().get("fbToken").value();
         try {
-            facebook.setOAuthAccessToken(new AccessToken(play.mvc.Http.Context.current().request().cookies().get("fbToken").value()));
-        } catch (Exception e) {}
+            facebook.setOAuthAccessToken(new AccessToken(Context.current().request().cookies().get("fbToken").value()));
+        } catch (Exception e) {
+        }
         return facebook;
     }
 
-    public static String getAccessToken(String oauthCode) throws FacebookException {
-        return getSimpleFBInstance().getOAuthAccessToken(oauthCode,callbackURL).getToken();
+    public static String getAccessToken(String oauthCode, Facebook fb) throws FacebookException {
+        return fb.getOAuthAccessToken(oauthCode, callbackURL).getToken();
     }
 
     public static String getAuthUrl() {
         Facebook facebook = getFBInstance();
         return facebook.getOAuthAuthorizationURL(callbackURL);
+    }
+
+    public static void logIn(String oauthCode) throws FacebookException {
+        Facebook fb = getFBInstance();
+        Context.current().response().setCookie("fbToken", FBHelper.getAccessToken(oauthCode, fb));
+        facebook4j.User fbUser = fb.users().getMe();
+        User user;
+        try {
+            Logger.debug("Looking for user in the DB");
+            user = User.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
+            Logger.info("User is loaded from db: "+user.toString());
+        } catch (Exception e){
+            Logger.debug("User not found in DB. Creating new user");
+            user = loadNewUser(fbUser);
+            user.save();
+            user= User.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
+            Logger.info("New user is created");
+        }
+
+        Context.current().response().setCookie("appUser", user.id.toString());
+    }
+
+    public static void logOut() {
+        Context.current().response().discardCookie("fbToken");
+        Context.current().response().discardCookie("appUser");
+    }
+
+    public static User loadNewUser(facebook4j.User fbUser) throws FacebookException {
+        User user = new User(fbUser.getId(), fbUser.getName(), fbUser.getUsername(), fbUser.getGender(), fbUser.getLink().toString());
+        return user;
+    }
+
+    public static void loadFriends() {
+        Facebook fb = getFBInstance();
+
     }
 
 }

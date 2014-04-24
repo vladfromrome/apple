@@ -8,9 +8,12 @@ POST        /bars/               controllers.Application.addBar()
 GET         /orm/                controllers.OrmTest.populateOrmtest()
 
 # Facebook interaction
-GET         /fbsignin            controllers.FBController.signIn()
-GET         /fbcallback          controllers.FBController.callback(code: String ?= "")
-GET         /fbpost              controllers.FBController.postMsg()
+GET         /fblogin             controllers.FBController.logIn
+GET         /fbcallback          controllers.FBController.loginCallback(code: String ?= "")
+GET         /fbpost              controllers.FBController.postMsg
+GET         /fbfriends           controllers.FBController.getFriendsList
+GET         /fblogout            controllers.FBController.logOut
+GET         /fbclean             controllers.FBController.cleanDB()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.at(path="/public", file)

@@ -1,0 +1,6 @@
+@(friendslist: facebook4j.ResponseList[facebook4j.Friend])
+@import facebook4j.ResponseList
+<ul>
+    @for(friend <- friendslist) {
+        <li>@friend.getId - @friend.getName</li> }
+</ul>
