@@ -15,6 +15,8 @@ GET         /fbfriends           controllers.FBController.getFriendsList
 GET         /fblogout            controllers.FBController.logOut
 GET         /fbclean             controllers.FBController.cleanDB()
 GET         /status              controllers.Application.status()
+GET         /loadfriends         controllers.FBController.loadFriends()
+
 
 
 # Map static resources from the /public folder to the /assets URL path

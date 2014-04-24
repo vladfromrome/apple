@@ -4,17 +4,11 @@ package controllers;
 import com.avaje.ebean.Ebean;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
-import facebook4j.ResponseList;
-import facebook4j.auth.AccessToken;
-import models.fbtest.Friend;
-import models.fbtest.User;
+import models.fbtest.AppUser;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import util.FBHelper;
-
-import javax.servlet.ServletException;
-import java.util.List;
 
 /**
  * Author: Vladimir Romanov
@@ -27,7 +21,7 @@ public class FBController extends Controller {
     private static final String logInUrl = "/status";
 
     public static Result cleanDB() {
-        Ebean.delete(User.FIND.all());
+        Ebean.delete(AppUser.FIND.all());
         return ok("DB is clean.");
     }
 
@@ -72,6 +66,16 @@ public class FBController extends Controller {
     public static Result logOut() {
         FBHelper.logOut();
         return redirect(logOutUrl);
+    }
+
+    public static Result loadFriends(){
+        try {
+            FBHelper.loadFriends();
+            return ok("friends are loaded successfully");
+        } catch (FacebookException e) {
+            e.printStackTrace();
+            return ok(e.getErrorMessage());
+        }
     }
 
 }

@@ -1,12 +1,14 @@
 package util;
 
-import facebook4j.Facebook;
-import facebook4j.FacebookException;
-import facebook4j.FacebookFactory;
+import facebook4j.*;
+import facebook4j.Friend;
+import facebook4j.User;
 import facebook4j.auth.AccessToken;
-import models.fbtest.User;
+import models.fbtest.*;
 import play.Logger;
 import play.mvc.Http.Context;
+
+import java.util.List;
 
 /**
  * User: Vladimir Romanov
@@ -50,16 +52,16 @@ public class FBHelper {
         Facebook fb = getFBInstance();
         Context.current().response().setCookie("fbToken", FBHelper.getAccessToken(oauthCode, fb));
         facebook4j.User fbUser = fb.users().getMe();
-        User user;
+        AppUser user;
         try {
             Logger.debug("Looking for user in the DB");
-            user = User.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
+            user = AppUser.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
             Logger.info("User is loaded from db: "+user.toString());
         } catch (Exception e){
             Logger.debug("User not found in DB. Creating new user");
             user = loadNewUser(fbUser);
             user.save();
-            user= User.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
+            user= AppUser.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
             Logger.info("New user is created");
         }
 
@@ -72,27 +74,53 @@ public class FBHelper {
         Logger.info("Logged out successfully.");
     }
 
-    public static User loadNewUser(facebook4j.User fbUser) throws FacebookException {
-        User user = new User(fbUser.getId(), fbUser.getName(), fbUser.getUsername(), fbUser.getGender(), fbUser.getLink().toString());
-        return user;
+    public static AppUser loadNewUser(User fbUser) throws FacebookException {
+        AppUser appUser = new AppUser(fbUser.getId(), fbUser.getName(), fbUser.getUsername(), fbUser.getGender(), fbUser.getLink().toString());
+        return appUser;
     }
 
-    public static void loadFriends() {
+    public static void loadFriends() throws FacebookException {
         Facebook fb = getFBInstance();
+        //get user's friends into user's profile list
+        //for each user's friend:
+        //add:user and common friends
+        AppUser appUser = getCurrentUser();
+        ResponseList<Friend> fbFriends =  fb.friends().getFriends();
+        for (Friend f:fbFriends){
+            AppFriend appFriend = new AppFriend(appUser,f.getId(),f.getName(),f.getUsername(),f.getGender(),f.getLink().toString());
+            appUser.profile.friends.add(appFriend);
+
+        }
+        appUser.save();
+        appUser.update();
+        List<AppFriend> appFriends = appUser.profile.friends;
+        for (AppFriend af:appFriends){
+            ResponseList<Friend> mutualFs = fb.getMutualFriends(af.user_id);
+            for (Friend f:mutualFs){
+                af.friends.add(AppFriend.FIND.where().eq("appUser",appUser).eq("user_id",f.getId()).findUnique());
+                //af.friends.add(appUser.profile);
+            }
+            af.save();
+        }
+
 
     }
 
     public static String getAppStatus(){
         String s = "";
         Facebook fb = getFBInstance();
-        User user;
+        AppUser appUser;
         try {
-            user = User.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
-            s = "You are logged in as "+user.profile.name;
+            appUser = AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
+            s = "You are logged in as "+appUser.profile.name;
         }   catch (Exception e)                                                                           {
             return "You are not authenticated.";
         }
         return s;
+    }
+
+    public static AppUser getCurrentUser(){
+        return AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
     }
 
 }
