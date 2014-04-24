@@ -1,13 +1,85 @@
 @(title: String)(content: Html)
 
 <!DOCTYPE html>
-
-<html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if (IE 7)&!(IEMobile)]>
+<html class="no-js lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if (IE 8)&!(IEMobile)]>
+<html class="no-js lt-ie9" lang="en">
+<![endif]-->
+<!--[if (IE 9)]>
+<html class="no-js ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en-US">
+        <!--<![endif]-->
     <head>
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+
+        <!-- Meta Tags -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <title>Friendster</title>
+
+        <meta name="description" content="Insert Your Site Description"/>
+
+        <!-- Mobile Specifics -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="MobileOptimized" content="320"/>
+
+        <!-- Mobile Internet Explorer ClearType Technology -->
+        <!--[if IEMobile]>
+          <meta http-equiv="cleartype" content="on">
+        <![endif]-->
+
+        <!-- Bootstrap -->
+        <link href="@routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+
+        <!-- Main Style -->
+        <link href="@routes.Assets.at("stylesheets/main.css")" rel="stylesheet">
+
+        <!-- Supersized -->
+        <link href="@routes.Assets.at("stylesheets/supersized.css")" rel="stylesheet">
+        <link href="@routes.Assets.at("stylesheets/supersized.shutter.css")" rel="stylesheet">
+
+        <!-- FancyBox -->
+        <link href="@routes.Assets.at("stylesheets/fancybox/jquery.fancybox.css")" rel="stylesheet">
+
+        <!-- Font Icons -->
+        <link href="@routes.Assets.at("stylesheets/fonts.css")" rel="stylesheet">
+
+        <!-- Shortcodes -->
+        <link href="@routes.Assets.at("stylesheets/shortcodes.css")" rel="stylesheet">
+
+        <!-- Responsive -->
+        <link href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")" rel="stylesheet">
+        <link href="@routes.Assets.at("stylesheets/responsive.css")" rel="stylesheet">
+
+            <!-- Google Font -->
+        <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,200italic,300,300italic,400italic,600,600italic,700,700italic,900'
+        rel='stylesheet' type='text/css'>
+
+            <!-- Fav Icon -->
+        <link rel="shortcut icon" href="#">
+
+        <link rel="apple-touch-icon" href="#">
+        <link rel="apple-touch-icon" sizes="114x114" href="#">
+        <link rel="apple-touch-icon" sizes="72x72" href="#">
+        <link rel="apple-touch-icon" sizes="144x144" href="#">
+
+            <!-- Modernizr -->
+        <script src="@routes.Assets.at("javascripts/modernizr.js")"></script>
+
+            <!-- Analytics -->
+        <script type="text/javascript">
+
+
+        </script>
+            <!-- End Analytics -->
+
     </head>
     <body>
         @content

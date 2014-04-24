@@ -1,10 +1,375 @@
 @(message: String)
 @main("Welcome to Apple test app") {
+    @*<h4 >@Html(models.TestBar.getBars())</h4>*@
+    @*<form action="@routes.Application.addBar()" method="post">*@
+    @*<input name="name">*@
+    @*<input type="submit">*@
+    @*</form>*@
+    <!-- This section is for Splash Screen -->
+    <section id="jSplash">
+        <div id="circle"></div>
+    </section>
+    <!-- End of Splash Screen -->
 
-    <h4 >@Html(models.TestBar.getBars())</h4>
-    <form action="@routes.Application.addBar()" method="post">
-        <input name="name">
-        <input type="submit">
-    </form>
+    <!-- Homepage Slider -->
+    <div id="home" class="container">
+
+        <div id="log-in" class="text-center" style="height : auto ; width : auto">
+            <a class="button button-large" href="#about">Log In</a>
+        </div>
+
+    </div>
+    <!-- End Homepage Slider -->
+
+    <!-- Header -->
+    <header>
+        <div class="sticky-nav">
+            <a id="mobile-nav" class="menu-nav" href="#menu-nav"></a>
+
+            <div id="logo">
+                <a id="goUp" href="#home" title="Brushed | Responsive One Page Template">Brushed Template</a>
+            </div>
+
+            <nav id="menu">
+                <ul id="menu-nav">
+                    <li>
+                        <a class="external" data-toggle="collapse" data-parent="#accordionArea"
+                        href="#oneArea" onclick="showMutualFriends ( ) ;">Get Friends</a>
+
+                    </li>
+                    <li id="get-mutual-friends-li" class="hidden"><a class="external" data-toggle="collapse" data-parent="#accordionArea"
+                    href="#twoArea" onclick="showSeeGraph ( ) ;">
+                        Get Mutual Friends</a></li>
+                    <li id="see-graph-li" class="hidden"><a class="external" data-toggle="collapse" data-parent="#accordionArea"
+                    href="#threeArea" >See Graph</a></li>
+                    <li><a href="/" class="external">Log Out</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <!-- Our Work Section -->
+    <div id="about" class="page">
+        <div class="container">
+
+                <!-- Title Page -->
+            <div class="row">
+                <div class="span12">
+                    <div class="title-page">
+                        <h2 class="title">Friendster</h2>
+
+                        <h3 class="title-description">Check Out The Relationships Of Your <a href="http://facebook.com">
+                            Facebook</a>
+                            Profile.</h3>
+                    </div>
+
+                        <!--Profile-->
+                    <div>
+                        <div class="span3">
+                            <div class="image-wrap">
+                                <div class="hover-wrap">
+                                    <span class="overlay-img"></span>
+                                    <span class="overlay-text-thumb">CTO/Founder</span>
+                                </div>
+                                <img src="@routes.Assets.at("images/work/thumbs/image-01.jpg")" alt="John Doe">
+                            </div>
+                        </div>
+                        <div class="span8">
+                            <h3 class="profile-name">John Doe</h3>
+
+                            <p class="profile-description">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                                ac
+                                augue at erat <a href="#">hendrerit dictum</a>.
+                                Praesent porta, purus eget sagittis imperdiet, nulla mi ullamcorper metus, id hendrerit
+                                metus
+                                diam vitae est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+                                inceptos
+                                himenaeos.</p>
+                                <!---->
+                        </div>
+                    </div>
+                        <!--End Profile-->
+
+                </div>
+            </div>
+                <!-- End Title Page -->
+
+                <!--Accordion-->
+            <div class="accordion" id="accordionArea">
+                <div id="get-friends" class="accordion-group">
+                    <div class="accordion-heading accordionize">
+                        <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordionArea"
+                        href="#oneArea" onclick="showMutualFriends ( ) ;">
+                            Get Friends
+                        </a>
+                    </div>
+                    <div id="oneArea" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input name="your_name" value="your_value" type="checkbox">
+                                        </th>
+                                        <th>User Id</th>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input name="your_name1" value="your_value1" type="checkbox">
+                                        </td>
+                                        <td>1</td>
+                                        <td>John Doe</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="your_name2" value="your_value2" type="checkbox">
+                                        </td>
+                                        <td>2</td>
+                                        <td>John Doe</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input name="your_name3" value="your_value3" type="checkbox">
+                                        </td>
+                                        <td>3</td>
+                                        <td>John Doe</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="get-mutual-friends" class="accordion-group hidden">
+                    <div class="accordion-heading accordionize">
+                        <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordionArea"
+                        href="#twoArea" onclick="showSeeGraph ( ) ;">
+                            Get Mutual Friends
+                        </a>
+                    </div>
+                    <div id="twoArea" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <div class="accordion" id="toggleArea">
+                                <div class="accordion-group">
+                                    <div class="accordion-heading accordionize">
+                                        <a class="secondary-toggle accordion-toggle " data-toggle="collapse" data-parent="#"
+                                        href="#oneAreaFriendships1">
+                                            John Doe
+                                            <span class="font-icon-arrow-simple-down"></span>
+                                        </a>
+                                    </div>
+                                    <div id="oneAreaFriendships1" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-group">
+                                    <div class="accordion-heading accordionize">
+                                        <a class="accordion-toggle secondary-toggle" data-toggle="collapse" data-parent="#"
+                                        href="#oneAreaFriendships2">
+                                            John Doe
+                                            <span class="font-icon-arrow-simple-down"></span>
+                                        </a>
+                                    </div>
+                                    <div id="oneAreaFriendships2" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-group">
+                                    <div class="accordion-heading accordionize">
+                                        <a class="accordion-toggle secondary-toggle" data-toggle="collapse" data-parent="#"
+                                        href="#oneAreaFriendships3">
+                                            John Doe
+                                            <span class="font-icon-arrow-simple-down"></span>
+                                        </a>
+                                    </div>
+                                    <div id="oneAreaFriendships3" class="accordion-body collapse">
+                                        <div class="accordion-inner">
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+
+                                            <p>Jan Doe</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="see-graph" class="accordion-group hidden">
+                    <div class="accordion-heading accordionize">
+                        <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordionArea"
+                        href="#threeArea">
+                            See Graph
+                        </a>
+                    </div>
+                    <div id="threeArea" class="accordion-body collapse">
+                        <div class="accordion-inner">
+
+                        </div>
+                    </div>
+                </div>
+                    <!--<div id="container">-->
+                    <!--<style>-->
+                    <!--#graph-container {-->
+                    <!--top: 0;-->
+                    <!--bottom: 0;-->
+                    <!--left: 0;-->
+                    <!--right: 0;-->
+                    <!--position: absolute;-->
+                    <!--}-->
+                    <!--</style>-->
+                    <!--<div id="graph-container"></div>-->
+                    <!--</div>-->
+            </div>
+        </div>
+            <!-- End Accordion -->
+
+    </div>
+    <!-- End Our Work Section -->
+    <!--<script src="_include/js/sigma.js/src/sigma.core.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/conrad.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/utils/sigma.utils.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/utils/sigma.polyfills.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/sigma.settings.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/classes/sigma.classes.dispatcher.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/classes/sigma.classes.configurable.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/classes/sigma.classes.graph.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/classes/sigma.classes.camera.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/classes/sigma.classes.quad.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/captors/sigma.captors.mouse.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/captors/sigma.captors.touch.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/sigma.renderers.canvas.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/sigma.renderers.webgl.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/sigma.renderers.def.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/webgl/sigma.webgl.nodes.def.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/webgl/sigma.webgl.edges.def.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/webgl/sigma.webgl.edges.fast.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/canvas/sigma.canvas.labels.def.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/canvas/sigma.canvas.hovers.def.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/canvas/sigma.canvas.nodes.def.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/canvas/sigma.canvas.edges.def.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/canvas/sigma.canvas.edges.curve.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/middlewares/sigma.middlewares.rescale.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/middlewares/sigma.middlewares.copy.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/misc/sigma.misc.animation.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/misc/sigma.misc.bindEvents.js"></script>-->
+    <!--<script src="_include/js/sigma.js/src/misc/sigma.misc.drawHovers.js"></script>-->
+    <!--END SIGMA IMPORTS -->
+
+    <!--<script>-->
+    <!--/**-->
+    <!--* This is a basic example on how to instanciate sigma. A random graph is-->
+    <!--* generated and stored in the "graph" variable, and then sigma is-->
+    <!--* instanciated directly with the graph.-->
+    <!--*-->
+    <!--* The simple instanciation of sigma is enough to make it render the graph-->
+    <!--* on the screen, since the graph is given directly to the constructor.-->
+    <!--*/-->
+    <!--var i,-->
+    <!--s,-->
+    <!--N = 100,-->
+    <!--E = 500,-->
+    <!--g = {-->
+    <!--nodes: [],-->
+    <!--edges: []-->
+    <!--};-->
+
+    <!--// Generate a random graph:-->
+    <!--for (i = 0; i < N; i++)-->
+    <!--g.nodes.push({-->
+    <!--id: 'n' + i,-->
+    <!--label: 'Node ' + i,-->
+    <!--x: Math.random(),-->
+    <!--y: Math.random(),-->
+    <!--size: Math.random(),-->
+    <!--color: '#666'-->
+    <!--});-->
+
+    <!--for (i = 0; i < E; i++)-->
+    <!--g.edges.push({-->
+    <!--id: 'e' + i,-->
+    <!--source: 'n' + (Math.random() * N | 0),-->
+    <!--target: 'n' + (Math.random() * N | 0),-->
+    <!--size: Math.random(),-->
+    <!--color: '#ccc'-->
+    <!--});-->
+
+    <!--// Instanciate sigma:-->
+    <!--s = new sigma({-->
+    <!--graph: g,-->
+    <!--container: 'graph-container'-->
+    <!--});-->
+    <!--</script>-->
+
+
+    <!-- Footer -->
+    <footer>
+        <p class="credits">&copy;2013 Brushed. <a href="http://themes.alessioatzeni.com/html/brushed/"
+        title="Brushed | Responsive One Page Template">Brushed Template</a> by <a
+        href="http://www.alessioatzeni.com/" title="Alessio Atzeni | Web Designer &amp; Front-end Developer">Alessio
+            Atzeni</a></p>
+    </footer>
+    <!-- End Footer -->
+
+    <!-- Back To Top -->
+    <a id="back-to-top" href="">
+        <i class="font-icon-arrow-simple-up"></i>
+    </a>
+    <!-- End Back to Top -->
+
+    <!-- Js -->
+    <script src="@routes.Assets.at("javascripts/jquery-1.11.0.min.js")"></script>
+    <!-- jQuery Core -->
+    <script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+    <!-- Bootstrap -->
+    @*<script src="@routes.Assets.at("javascripts/supersized.3.2.7.min.js")"></script>*@
+    <!-- Slider -->
+    <script src="@routes.Assets.at("javascripts/waypoints.js")"></script>
+    <!-- WayPoints -->
+    <script src="@routes.Assets.at("javascripts/waypoints-sticky.js")"></script>
+    <!-- Waypoints for Header -->
+    <script src="@routes.Assets.at("javascripts/jquery.isotope.js")"></script>
+    <!-- Isotope Filter -->
+    <script src="@routes.Assets.at("javascripts/jquery.fancybox.pack.js")"></script>
+    <!-- Fancybox -->
+    <script src="@routes.Assets.at("javascripts/jquery.fancybox-media.js")"></script>
+    <!-- Fancybox for Media -->
+    <script src="@routes.Assets.at("javascripts/jquery.tweet.js")"></script>
+    <!-- Tweet -->
+    <script src="@routes.Assets.at("javascripts/plugins.js")"></script>
+    <!-- Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi -->
+    <script src="@routes.Assets.at("javascripts/main.js")"></script>
+    <!-- Default JS -->
+    <!-- End Js -->
 
 }
