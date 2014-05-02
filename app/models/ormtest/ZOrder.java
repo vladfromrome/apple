@@ -12,7 +12,7 @@ import java.util.List;
  * Time: 20:48
  * To change this template use File | Settings | File Templates.
  */
-@Entity
+//@Entity
 public class ZOrder extends Model{
     @Id
     public Long id;

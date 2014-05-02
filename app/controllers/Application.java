@@ -29,6 +29,8 @@ public class Application extends Controller {
         return ok(views.html.status.render());
     }
 
-
+    public static Result revroute(){
+        return redirect(controllers.routes.Application.index()); //reverse routing!
+    }
 
 }

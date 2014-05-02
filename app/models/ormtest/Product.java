@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 04.04.14
  * Time: 11:09
  */
-@Entity
+//@Entity
 public class Product extends Model{
     @Id
     public Long id;

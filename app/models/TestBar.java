@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 12:05
  * To change this template use File | Settings | File Templates.
  */
-@Entity
+//@Entity
 public class TestBar extends Model {
 
     @Id

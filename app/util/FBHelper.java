@@ -1,5 +1,6 @@
 package util;
 
+import com.avaje.ebean.Ebean;
 import facebook4j.*;
 import facebook4j.Friend;
 import facebook4j.User;
@@ -19,16 +20,23 @@ public class FBHelper {
     private static final String appId = "531369976977751";       //client_id
     private static final String appSecret = "324497e65821722d2af291731994bb54";
     private static final String callbackURL = "http://localhost:9000/fbcallback";
-    private static final String permissions = "publish_actions";
+    private static final String permissions = "";
+    //private static final String permissions = "publish_actions";
     //private static final String callbackToIndex = "http://localhost:9000/fbcallback";
 
+    /**
+     * @return a fresh instance of facebook4j.facebook object
+     */
     private static Facebook getSimpleFBInstance() {
         Facebook facebook = new FacebookFactory().getInstance();
         facebook.setOAuthAppId(appId, appSecret);
-        //facebook.setOAuthPermissions(permissions);
+        facebook.setOAuthPermissions(permissions);
         return facebook;
     }
 
+    /**
+     * @return an instance of facebook4j.facebook object fueled with an Access Token taken from cookies.
+     */
     public static Facebook getFBInstance() {
         Facebook facebook = getSimpleFBInstance();
         //String fbToken=play.mvc.Http.Context.current().request().cookies().get("fbToken").value();
@@ -39,18 +47,22 @@ public class FBHelper {
         return facebook;
     }
 
-    public static String getAccessToken(String oauthCode, Facebook fb) throws FacebookException {
-        return fb.getOAuthAccessToken(oauthCode, callbackURL).getToken();
-    }
-
+    /**
+     * @return a url to redirect user to in order to login.
+     */
     public static String getAuthUrl() {
         Facebook facebook = getFBInstance();
         return facebook.getOAuthAuthorizationURL(callbackURL);
     }
 
+    /**
+     * Given and oauthCode acquires an Access Token from facebook and loads or creates current user entity.
+     * Saves the access token and user's id into cookies.
+     * @param oauthCode
+     */
     public static void logIn(String oauthCode) throws FacebookException {
         Facebook fb = getFBInstance();
-        Context.current().response().setCookie("fbToken", FBHelper.getAccessToken(oauthCode, fb));
+        Context.current().response().setCookie("fbToken", fb.getOAuthAccessToken(oauthCode, callbackURL).getToken());
         facebook4j.User fbUser = fb.users().getMe();
         AppUser user;
         try {
@@ -59,53 +71,69 @@ public class FBHelper {
             Logger.info("User is loaded from db: "+user.toString());
         } catch (Exception e){
             Logger.debug("User not found in DB. Creating new user");
-            user = loadNewUser(fbUser);
-            user.save();
+            createNewUser(fbUser);
             user= AppUser.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
             Logger.info("New user is created");
         }
-
         Context.current().response().setCookie("appUser", user.id.toString());
     }
 
+    /**
+     * Discards current user data from cookies
+     */
     public static void logOut() {
         Context.current().response().discardCookie("fbToken");
         Context.current().response().discardCookie("appUser");
         Logger.info("Logged out successfully.");
     }
 
-    public static AppUser loadNewUser(User fbUser) throws FacebookException {
+    /**
+     * Persists a facebook user entity into DB as application user.
+     */
+    public static AppUser createNewUser(User fbUser) throws FacebookException {
         AppUser appUser = new AppUser(fbUser.getId(), fbUser.getName(), fbUser.getUsername(), fbUser.getGender(), fbUser.getLink().toString());
         return appUser;
     }
 
+    /**
+     * Persists friends of the current user into DB
+     * @throws FacebookException
+     */
+    //TODO Optimize fetching. Fetch in one api call and one ebean transaction. Add delete function call before fetching.
     public static void loadFriends() throws FacebookException {
+        if (getAppUser().friendEntities.size()>0){    //todo. substitute deleteFriends(getAppUser());
+            return;
+        }
+
         Facebook fb = getFBInstance();
         //get user's friends into user's profile list
-        //for each user's friend:
-        //add:user and common friends
-        AppUser appUser = getCurrentUser();
+        AppUser appUser = getAppUser();
         ResponseList<Friend> fbFriends =  fb.friends().getFriends();
         for (Friend f:fbFriends){
-            AppFriend appFriend = new AppFriend(appUser,f.getId(),f.getName(),f.getUsername(),f.getGender(),f.getLink().toString());
+            Logger.debug("Fetching friend: "+ f.getId());
+            User u = fb.users().getUser(f.getId());
+            Logger.debug("User entity: " + u.toString());
+            AppFriend appFriend = new AppFriend(appUser,u.getId(),u.getName(),u.getUsername(),u.getGender(),u.getLink().toString());
             appUser.profile.friends.add(appFriend);
-
         }
-        appUser.save();
-        appUser.update();
-        List<AppFriend> appFriends = appUser.profile.friends;
-        for (AppFriend af:appFriends){
+        appUser.profile.update();
+        //for each user's friend:
+        //add:user and mutual friends
+        List<AppFriend> appUserFriends = appUser.profile.friends;
+        for (AppFriend af:appUserFriends){
+            af.friends.add(appUser.profile);
             ResponseList<Friend> mutualFs = fb.getMutualFriends(af.user_id);
             for (Friend f:mutualFs){
                 af.friends.add(AppFriend.FIND.where().eq("appUser",appUser).eq("user_id",f.getId()).findUnique());
-                //af.friends.add(appUser.profile);
             }
+            Logger.debug("Persisting friend: " + af.toString());
             af.save();
         }
-
-
     }
 
+    /**
+     * @return a String saying who's logged in.
+     */
     public static String getAppStatus(){
         String s = "";
         Facebook fb = getFBInstance();
@@ -119,8 +147,66 @@ public class FBHelper {
         return s;
     }
 
-    public static AppUser getCurrentUser(){
+    /**
+     * @return Current AppUser entity loaded from DB
+     */
+    public static AppUser getAppUser() throws NullPointerException{
         return AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
     }
+
+    /**
+     * @return String of the user, that is currently logged in
+     */
+    //TODO Store user name in cookies.
+    public static String getAppUserName() throws NullPointerException{
+        return getAppUser().profile.name;
+    }
+
+    /**
+     * @param friendId
+     * @return a list of common friends of current user and friend with Id = friendId
+     */
+    public static List<AppFriend> getCommonFriendsWith(String friendId) throws NullPointerException{
+        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id",friendId).eq("appUser",getAppUser()).findUnique().friends;
+        return cf.subList(1,cf.size()-1);
+    }
+
+    /**
+     * @return a list of friends of current user
+     */
+    public static List<AppFriend> getAllFriends() throws NullPointerException{
+        return AppFriend.FIND.where().eq("appUser",getAppUser()).findList();
+    }
+
+    /**
+     * Deletes all friends and connections for the app user specified
+     * @param user
+     */
+    //todo raw sql. execute(SqlUpdate sqlUpdate)
+    public static void deleteFriends(AppUser user){
+
+        List<AppFriend> appUserFriends = user.profile.friends;
+        Logger.debug("Deleting friends connections. "+appUserFriends.toString()+" size: "+appUserFriends.size());
+        for (AppFriend auf:appUserFriends){
+            List<AppFriend> cf = getCommonFriendsWith(auf.user_id);
+
+            Logger.debug("removing  connections of "+auf.toString()+". the first is "+cf.get(0).name);
+            //Logger.debug(auf.toString());
+            auf = AppFriend.FIND.where().eq("id",auf.id).findUnique();
+            //auf.friends.clear();
+            Ebean.delete(auf.friends);
+            auf.friends=null;
+            //auf=new AppFriend(user,auf.user_id,auf.name,auf.nickname,auf.gender,auf.link);
+            auf.update();
+        }
+        user = getAppUser();
+        Logger.debug("Deleting friends ");
+
+        for (AppFriend auf:user.profile.friends){
+            Logger.debug("deleting "+auf.toString());
+            auf.delete();
+        }
+    }
+
 
 }

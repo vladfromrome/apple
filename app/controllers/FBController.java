@@ -4,6 +4,7 @@ package controllers;
 import com.avaje.ebean.Ebean;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
+import models.fbtest.AppFriend;
 import models.fbtest.AppUser;
 import play.Logger;
 import play.mvc.Controller;
@@ -21,7 +22,10 @@ public class FBController extends Controller {
     private static final String logInUrl = "/status";
 
     public static Result cleanDB() {
-        Ebean.delete(AppUser.FIND.all());
+        //Ebean.delete(AppFriend.FIND.where().eq("appUser",FBHelper.getAppUser()).findList());
+//        Ebean.delete(AppUser.FIND.all());
+//        Ebean.delete(AppFriend.FIND.all());
+        FBHelper.deleteFriends(FBHelper.getAppUser());
         return ok("DB is clean.");
     }
 
@@ -56,10 +60,10 @@ public class FBController extends Controller {
 
     public static Result getFriendsList() {
         try {
-            return ok(views.html.friendslist.render(FBHelper.getFBInstance().friends().getFriends()));
+            return ok(views.html.friendslist.render(FBHelper.getAllFriends()));
         } catch (Exception e) {
-            Logger.info("fb error: " + e.getMessage());
-            return ok(e.getMessage());
+            Logger.info("no friends or error: " + e.getMessage());
+            return ok("no friends or error: " + e.getMessage());
         }
     }
 
@@ -70,11 +74,23 @@ public class FBController extends Controller {
 
     public static Result loadFriends(){
         try {
+            Logger.info("Loading friends of "+FBHelper.getAppUserName());
             FBHelper.loadFriends();
             return ok("friends are loaded successfully");
-        } catch (FacebookException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            return ok(e.getErrorMessage());
+            return ok(e.toString());
+        }
+    }
+
+    public static Result test(){
+        try {
+
+            //AppUser user = FBHelper.getAppUser().profile.friends=null;
+            //return ok();
+            return ok(views.html.friendslist.render(FBHelper.getCommonFriendsWith("1302233592")));
+        } catch (Exception e){
+            return ok("no common friends or error: " + e.getMessage());
         }
     }
 

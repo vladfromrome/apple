@@ -1,6 +1,6 @@
-@(friendslist: facebook4j.ResponseList[facebook4j.Friend])
-@import facebook4j.ResponseList
-<ul>
+@(friendslist: java.util.List[models.fbtest.AppFriend])
+@import java.util.List
+<ol>
     @for(friend <- friendslist) {
-        <li>@friend.getId - @friend.getName</li> }
-</ul>
+        <li>@friend.user_id - @friend.name</li> }
+</ol>

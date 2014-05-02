@@ -15,7 +15,7 @@ import java.util.List;
  * Time: 11:13
  * To change this template use File | Settings | File Templates.
  */
-@Entity
+//@Entity
 public class Customer extends Model{
     @Id
     public Long id;

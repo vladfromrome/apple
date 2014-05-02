@@ -14,7 +14,7 @@ import java.util.List;
  * Time: 11:44
  * To change this template use File | Settings | File Templates.
  */
-@Entity
+//@Entity
 public class Tag extends Model{
     @Id
     public Long id;
