@@ -4,8 +4,12 @@ App status: @(util.FBHelper.getAppStatus) <br>
     <a href="http://localhost:9000/fblogin">login</a> <br>
     <a href="http://localhost:9000/loadfriends">persist friends profiles and connections into DB</a> <br>
     <a href="http://localhost:9000/fbfriends">view list of friends</a> <br>
-    <a href="http://localhost:9000/test">View common friends with user 1302233592</a> <br>
+    <a href="http://localhost:9000/fbcommon">View common friends with user 1148117708</a> <br>
     <a href="http://localhost:9000/fblogout">logout</a> <br>
     @*<a href="http://localhost:9000/fbclean">clean db</a> <br>*@
+    <br>
+    <br>
+    Profile picture<br>
+<img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getPictureId)"  alt="This is an image" />  <br>
 
 

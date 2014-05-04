@@ -2,5 +2,6 @@
 @import java.util.List
 <ol>
     @for(friend <- friendslist) {
-        <li>@friend.user_id - @friend.name</li> }
+        <li><img src="@routes.ImageController.getImage(friend.picId())"  alt="This is a profile picture" /> -
+            @friend.user_id - @friend.name</li> }
 </ol>

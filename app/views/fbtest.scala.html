@@ -1,0 +1,4 @@
+@()
+@import controllers.FBController
+url string: @FBController.getPicLink <br>
+    picture: <img src="@routes.ImageController.getImage(models.Image.saveAndGetId(FBController.getPicLink))"  alt="This is an image" />  <br>

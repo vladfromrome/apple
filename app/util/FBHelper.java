@@ -58,6 +58,7 @@ public class FBHelper {
     /**
      * Given and oauthCode acquires an Access Token from facebook and loads or creates current user entity.
      * Saves the access token and user's id into cookies.
+     *
      * @param oauthCode
      */
     public static void logIn(String oauthCode) throws FacebookException {
@@ -68,11 +69,11 @@ public class FBHelper {
         try {
             Logger.debug("Looking for user in the DB");
             user = AppUser.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
-            Logger.info("User is loaded from db: "+user.toString());
-        } catch (Exception e){
+            Logger.info("User is loaded from db: " + user.toString());
+        } catch (Exception e) {
             Logger.debug("User not found in DB. Creating new user");
-            createNewUser(fbUser);
-            user= AppUser.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
+            createNewUser(fbUser,fb);
+            user = AppUser.FIND.where().eq("profile.user_id", fbUser.getId()).findUnique();
             Logger.info("New user is created");
         }
         Context.current().response().setCookie("appUser", user.id.toString());
@@ -90,41 +91,53 @@ public class FBHelper {
     /**
      * Persists a facebook user entity into DB as application user.
      */
-    public static AppUser createNewUser(User fbUser) throws FacebookException {
-        AppUser appUser = new AppUser(fbUser.getId(), fbUser.getName(), fbUser.getUsername(), fbUser.getGender(), fbUser.getLink().toString());
+    public static AppUser createNewUser(User fbUser, Facebook fb) throws FacebookException {
+        AppUser appUser = new AppUser(fbUser.getId(),
+                fbUser.getName(), fbUser.getUsername(),
+                fbUser.getGender(), fbUser.getLink().toString(),
+                fb.users().getPictureURL(fbUser.getId(), PictureSize.square).toString());
         return appUser;
     }
 
+
     /**
      * Persists friends of the current user into DB
+     *
      * @throws FacebookException
      */
-    //TODO Optimize fetching. Fetch in one api call and one ebean transaction. Add delete function call before fetching.
+    //TODO Optimize fetching. Fetch in one api call and one ebean transaction.
     public static void loadFriends() throws FacebookException {
-        if (getAppUser().friendEntities.size()>0){    //todo. substitute deleteFriends(getAppUser());
+        if (getAppUser().friendEntities.size() > 0) {    //todo. add deleteFriends(getAppUser());
             return;
         }
 
         Facebook fb = getFBInstance();
         //get user's friends into user's profile list
         AppUser appUser = getAppUser();
-        ResponseList<Friend> fbFriends =  fb.friends().getFriends();
-        for (Friend f:fbFriends){
-            Logger.debug("Fetching friend: "+ f.getId());
+        ResponseList<Friend> fbFriends = fb.friends().getFriends();
+        for (Friend f : fbFriends) {
+            Logger.debug("Fetching friend: " + f.getId());
             User u = fb.users().getUser(f.getId());
             Logger.debug("User entity: " + u.toString());
-            AppFriend appFriend = new AppFriend(appUser,u.getId(),u.getName(),u.getUsername(),u.getGender(),u.getLink().toString());
+            AppFriend appFriend = new AppFriend(
+                    appUser,
+                    u.getId(),
+                    u.getName(),
+                    u.getUsername(),
+                    u.getGender(),
+                    u.getLink().toString(),
+                    fb.users().getPictureURL(u.getId(),PictureSize.square).toString());
             appUser.profile.friends.add(appFriend);
         }
         appUser.profile.update();
         //for each user's friend:
         //add:user and mutual friends
         List<AppFriend> appUserFriends = appUser.profile.friends;
-        for (AppFriend af:appUserFriends){
+        for (AppFriend af : appUserFriends) {
             af.friends.add(appUser.profile);
             ResponseList<Friend> mutualFs = fb.getMutualFriends(af.user_id);
-            for (Friend f:mutualFs){
-                af.friends.add(AppFriend.FIND.where().eq("appUser",appUser).eq("user_id",f.getId()).findUnique());
+            for (Friend f : mutualFs) {
+                af.friends.add(AppFriend.FIND.where().eq("appUser", appUser).eq("user_id", f.getId()).findUnique());
             }
             Logger.debug("Persisting friend: " + af.toString());
             af.save();
@@ -134,15 +147,15 @@ public class FBHelper {
     /**
      * @return a String saying who's logged in.
      */
-    public static String getAppStatus(){
+    public static String getAppStatus() {
         String s = "";
         Facebook fb = getFBInstance();
         AppUser appUser;
         try {
             appUser = AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
-            s = "You are logged in as "+appUser.profile.name;
-        }   catch (Exception e)                                                                           {
-            return "You are not authenticated.";
+            s = "You are logged in as " + appUser.profile.name;
+        } catch (Exception e) {
+            s = "You are not authenticated.";
         }
         return s;
     }
@@ -150,7 +163,7 @@ public class FBHelper {
     /**
      * @return Current AppUser entity loaded from DB
      */
-    public static AppUser getAppUser() throws NullPointerException{
+    public static AppUser getAppUser() throws NullPointerException {
         return AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
     }
 
@@ -158,7 +171,7 @@ public class FBHelper {
      * @return String of the user, that is currently logged in
      */
     //TODO Store user name in cookies.
-    public static String getAppUserName() throws NullPointerException{
+    public static String getAppUserName() throws NullPointerException {
         return getAppUser().profile.name;
     }
 
@@ -166,44 +179,45 @@ public class FBHelper {
      * @param friendId
      * @return a list of common friends of current user and friend with Id = friendId
      */
-    public static List<AppFriend> getCommonFriendsWith(String friendId) throws NullPointerException{
-        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id",friendId).eq("appUser",getAppUser()).findUnique().friends;
-        return cf.subList(1,cf.size()-1);
+    public static List<AppFriend> getCommonFriendsWith(String friendId) throws NullPointerException {
+        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", friendId).eq("appUser", getAppUser()).findUnique().friends;
+        return cf.subList(1, cf.size() - 1);
     }
 
     /**
      * @return a list of friends of current user
      */
-    public static List<AppFriend> getAllFriends() throws NullPointerException{
-        return AppFriend.FIND.where().eq("appUser",getAppUser()).findList();
+    public static List<AppFriend> getAllFriends() throws NullPointerException {
+        return AppFriend.FIND.where().eq("appUser", getAppUser()).findList();
     }
 
     /**
      * Deletes all friends and connections for the app user specified
+     *
      * @param user
      */
     //todo raw sql. execute(SqlUpdate sqlUpdate)
-    public static void deleteFriends(AppUser user){
+    public static void deleteFriends(AppUser user) {
 
         List<AppFriend> appUserFriends = user.profile.friends;
-        Logger.debug("Deleting friends connections. "+appUserFriends.toString()+" size: "+appUserFriends.size());
-        for (AppFriend auf:appUserFriends){
+        Logger.debug("Deleting friends connections. " + appUserFriends.toString() + " size: " + appUserFriends.size());
+        for (AppFriend auf : appUserFriends) {
             List<AppFriend> cf = getCommonFriendsWith(auf.user_id);
 
-            Logger.debug("removing  connections of "+auf.toString()+". the first is "+cf.get(0).name);
+            Logger.debug("removing  connections of " + auf.toString() + ". the first is " + cf.get(0).name);
             //Logger.debug(auf.toString());
-            auf = AppFriend.FIND.where().eq("id",auf.id).findUnique();
+            auf = AppFriend.FIND.where().eq("id", auf.id).findUnique();
             //auf.friends.clear();
             Ebean.delete(auf.friends);
-            auf.friends=null;
+            auf.friends = null;
             //auf=new AppFriend(user,auf.user_id,auf.name,auf.nickname,auf.gender,auf.link);
             auf.update();
         }
         user = getAppUser();
         Logger.debug("Deleting friends ");
 
-        for (AppFriend auf:user.profile.friends){
-            Logger.debug("deleting "+auf.toString());
+        for (AppFriend auf : user.profile.friends) {
+            Logger.debug("deleting " + auf.toString());
             auf.delete();
         }
     }
