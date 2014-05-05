@@ -167,6 +167,17 @@ public class FBHelper {
         return AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
     }
 
+    //Bool Get User
+    public static boolean userLogged(){
+        try {
+            getAppUser();
+            return true;
+        } catch (Exception e) {
+            Logger.debug("User not logged in.");
+            return false;
+        }
+    }
+
     /**
      * @return String of the user, that is currently logged in
      */

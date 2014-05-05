@@ -18,7 +18,6 @@ public class ImageController extends Controller {
      */
     public static Result getImage(Long id) {
         try {
-            Logger.debug("fetching image");
             Image image = Image.FIND.byId(id);
             return ok(image.content).as(image.contentType);
         } catch (Exception e) {

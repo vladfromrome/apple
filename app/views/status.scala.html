@@ -9,8 +9,8 @@ App status: @(util.FBHelper.getAppStatus) <br>
 @*<a href="http://localhost:9000/fbclean">clean db</a> <br>*@
 <br>
 <br>
+@if(util.FBHelper.userLogged()){
     Profile picture<br>
-@if(util.FBHelper.getAppStatus!="You are not authenticated."){
 <img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getPictureId)"  alt="This is an image" />  <br>
     }
 
