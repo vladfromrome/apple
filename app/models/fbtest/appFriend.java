@@ -34,18 +34,8 @@ public class AppFriend extends Model{
     @ManyToOne
     public AppUser appUser;   //todo.maybe move the field into a separate table?
 
-    @Transient public CentralityMetrics cMetrics;
-
-    public void getConnections(){}
-    public void getCMetrics(){}
-    public void getCommonFriends(AppFriend f){}
-    public void getCommonFriends(AppFriend f1,AppFriend f2){}
-
     //to be continued...
 
-    /**
-     * autosaves new Friend entity into DB
-     */
     public AppFriend(AppUser appUser,String user_id, String name, String nickname, String gender, String link, String profileImageLink) {
         this.appUser=appUser;
         this.user_id = user_id;
@@ -55,11 +45,24 @@ public class AppFriend extends Model{
         this.link = link;
         this.profileImageLink = profileImageLink;
         this.picture=new Image(profileImageLink);
-        this.save();
+    }
+
+    /**
+     * for testing purposes.
+     */
+    public AppFriend(String user_id, String name, String nickname, String gender) {
+        this.user_id = user_id;
+        this.name = name;
+        this.nickname = nickname;
+        this.gender = gender;
     }
 
     public Long picId(){
-        return this.picture.id;
+        try {
+            return this.picture.id;
+        } catch (Exception e){
+            return Long.valueOf("1");
+        }
     }
 
     @Override

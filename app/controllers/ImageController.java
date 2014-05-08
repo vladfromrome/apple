@@ -26,4 +26,14 @@ public class ImageController extends Controller {
         }
     }
 
+    public static Result getImage(String id) {
+        try {
+            Image image = Image.FIND.byId(Long.valueOf(id));
+            return ok(image.content).as(image.contentType);
+        } catch (Exception e) {
+            Logger.debug("Error while fetching image "+id+": "+e.toString());
+            return ok("image not fetched");
+        }
+    }
+
 }

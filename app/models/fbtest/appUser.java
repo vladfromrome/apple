@@ -27,6 +27,7 @@ public class AppUser extends Model{
      */
     public AppUser(String user_id, String name, String nickname, String gender, String link, String profileImageLink) {
         this.profile = new AppFriend(this,user_id,name,nickname,gender,link,profileImageLink);
+        this.profile.save();
         this.save();
     }
 

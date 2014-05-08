@@ -127,6 +127,7 @@ public class FBHelper {
                     u.getGender(),
                     u.getLink().toString(),
                     fb.users().getPictureURL(u.getId(),PictureSize.square).toString());
+            appFriend.save();
             appUser.profile.friends.add(appFriend);
         }
         appUser.profile.update();
@@ -209,7 +210,6 @@ public class FBHelper {
      */
     //todo raw sql. execute(SqlUpdate sqlUpdate)
     public static void deleteFriends(AppUser user) {
-
         List<AppFriend> appUserFriends = user.profile.friends;
         Logger.debug("Deleting friends connections. " + appUserFriends.toString() + " size: " + appUserFriends.size());
         for (AppFriend auf : appUserFriends) {
