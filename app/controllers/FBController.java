@@ -1,13 +1,10 @@
 package controllers;
 
 
-import com.avaje.ebean.Ebean;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.PictureSize;
 import models.Image;
-import models.fbtest.AppFriend;
-import models.fbtest.AppUser;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;

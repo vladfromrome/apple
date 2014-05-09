@@ -1,10 +1,9 @@
-package models.fbtest;
+package models;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.graphstream.algorithm.BetweennessCentrality;
-import org.graphstream.algorithm.measure.AbstractCentrality;
 import org.graphstream.algorithm.measure.ClosenessCentrality;
 import org.graphstream.algorithm.measure.DegreeCentrality;
 import org.graphstream.graph.EdgeRejectedException;

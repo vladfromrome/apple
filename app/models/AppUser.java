@@ -1,4 +1,4 @@
-package models.fbtest;
+package models;
 
 import play.db.ebean.Model;
 

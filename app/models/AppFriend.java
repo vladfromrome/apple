@@ -1,6 +1,5 @@
-package models.fbtest;
+package models;
 
-import models.Image;
 import play.db.ebean.Model;
 
 import javax.persistence.*;

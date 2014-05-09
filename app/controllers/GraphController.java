@@ -1,18 +1,9 @@
 package controllers;
-import models.fbtest.AppFriend;
-import models.fbtest.GraphData;
-import org.graphstream.algorithm.BetweennessCentrality;
-import org.graphstream.algorithm.measure.ClosenessCentrality;
-import org.graphstream.algorithm.measure.DegreeCentrality;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.*;
-import org.graphstream.graph.Node;
+import models.AppFriend;
+import models.GraphData;
 
-import java.text.Format;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 /**

@@ -5,7 +5,8 @@ import facebook4j.*;
 import facebook4j.Friend;
 import facebook4j.User;
 import facebook4j.auth.AccessToken;
-import models.fbtest.*;
+import models.AppFriend;
+import models.AppUser;
 import play.Logger;
 import play.mvc.Http.Context;
 
