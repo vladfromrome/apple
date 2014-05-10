@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "friends")
 public class AppFriend extends Model{
+    //<editor-fold desc="Fields">
     @Id
     public Long id;
     public static Finder<Long,AppFriend> FIND = new Finder<>(Long.class, AppFriend.class);
@@ -32,9 +33,11 @@ public class AppFriend extends Model{
     public List<AppFriend> friends;
     @ManyToOne
     public AppUser appUser;   //todo.maybe move the field into a separate table?
+    //</editor-fold>
 
     //to be continued...
 
+    //<editor-fold desc="Constructors">
     public AppFriend(AppUser appUser,String user_id, String name, String nickname, String gender, String link, String profileImageLink) {
         this.appUser=appUser;
         this.user_id = user_id;
@@ -55,6 +58,7 @@ public class AppFriend extends Model{
         this.nickname = nickname;
         this.gender = gender;
     }
+    //</editor-fold>
 
     public Long picId(){
         try {

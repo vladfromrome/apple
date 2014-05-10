@@ -4,6 +4,9 @@ package controllers;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.PictureSize;
+import models.AppFriend;
+import models.AppUser;
+import models.GraphData;
 import models.Image;
 import play.Logger;
 import play.mvc.Controller;
@@ -11,6 +14,8 @@ import play.mvc.Result;
 import util.FBHelper;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: Vladimir Romanov
@@ -19,9 +24,12 @@ import java.net.URL;
  */
 public class FBController extends Controller {
 
+    //<editor-fold desc="Constants">
     private static final String logOutUrl = "/status";
     private static final String logInUrl = "/status";
+    //</editor-fold>
 
+    //<editor-fold desc="Results">
     //development in progress
     public static Result cleanDB() {
         //Ebean.delete(AppFriend.FIND.where().eq("appUser",FBHelper.getAppUser()).findList());
@@ -62,9 +70,9 @@ public class FBController extends Controller {
         return redirect(logOutUrl);
     }
 
-    public static Result loadFriends(){
+    public static Result loadFriends() {
         try {
-            Logger.info("Loading friends of "+FBHelper.getAppUserName());
+            Logger.info("Loading friends of " + FBHelper.getAppUserName());
             FBHelper.loadFriends();
             return ok("friends are loaded successfully");
         } catch (Exception e) {
@@ -72,7 +80,37 @@ public class FBController extends Controller {
             return ok(e.toString());
         }
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Utilities">
+    /**
+     * Forms a friendlist by given list of user_ids.
+     * @return Graph data for the friendlist.
+     */
+    public static GraphData getGraphData(List<String> friendIds) {
+        List<AppFriend> friendlist = new ArrayList<>();
+        try {
+            AppFriend userProfile = FBHelper.getAppUser().profile;
+            if (!friendIds.contains(userProfile.user_id)) {   //add user to the list if he is not there yet.
+                friendlist.add(userProfile);
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        for (String userId : friendIds) {
+            AppFriend f =   FBHelper.getFriend(userId);
+            if (f!=null){
+            friendlist.add(f);}
+            else {
+                Logger.debug("Friend "+userId+" not found!");
+            }
+        }
+        GraphData graphData = new GraphData(friendlist);
+         return graphData;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Test&Debug">
     //for testing purposes
     public static Result postMsg() {
         String message = "Bazinga! fb api test.";
@@ -87,20 +125,20 @@ public class FBController extends Controller {
     }
 
     //for testing purposes
-    public static Result fbcommon(){
+    public static Result fbcommon() {
         try {
 
             //AppUser user = FBHelper.getAppUser().profile.friends=null;
             //return ok();
             return ok(views.html.friendslist.render(FBHelper.getCommonFriendsWith("1148117708")));
-        } catch (Exception e){
+        } catch (Exception e) {
             return ok("no common friends or error: " + e.getMessage());
         }
     }
 
     //for testing purposes
-    public static  Result fbtest(){
-        Facebook fb =  FBHelper.getFBInstance();
+    public static Result fbtest() {
+        Facebook fb = FBHelper.getFBInstance();
         try {
             URL url = fb.users().getPictureURL(FBHelper.getAppUser().profile.user_id, PictureSize.square);
             Image img = new Image(url.toString());
@@ -113,8 +151,8 @@ public class FBController extends Controller {
     }
 
     //for testing purposes
-    public static String getPicLink(){
-        Facebook fb =  FBHelper.getFBInstance();
+    public static String getPicLink() {
+        Facebook fb = FBHelper.getFBInstance();
         try {
             URL url = fb.users().getPictureURL(FBHelper.getAppUser().profile.user_id, PictureSize.square);
             return url.toString();
@@ -124,8 +162,14 @@ public class FBController extends Controller {
     }
 
     //for testing purposes
-    public static Result testPage(){
-        return ok(views.html.fbtest.render());
+    public static Result testPage() {
+        List<String> ids=new ArrayList<>();
+        ids.add("868290636");
+        ids.add("100000288916361");
+        ids.add("1140600495");
+        return ok(getGraphData(ids).toString());
     }
+    //</editor-fold>
+
 
 }

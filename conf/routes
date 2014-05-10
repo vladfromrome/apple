@@ -4,8 +4,6 @@
 
 # Home page
 GET         /                    controllers.Application.index()
-POST        /bars/               controllers.Application.addBar()
-GET         /orm/                controllers.OrmTest.populateOrmtest()
 GET         /revroute            controllers.Application.revroute()
 
 

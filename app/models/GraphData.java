@@ -7,6 +7,7 @@ import org.graphstream.algorithm.BetweennessCentrality;
 import org.graphstream.algorithm.measure.ClosenessCentrality;
 import org.graphstream.algorithm.measure.DegreeCentrality;
 import org.graphstream.graph.EdgeRejectedException;
+import org.graphstream.graph.ElementNotFoundException;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
@@ -19,25 +20,31 @@ import org.graphstream.graph.implementations.SingleGraph;
 public class GraphData {
     Graph graph;
     List<GraphNode> friendNodes;
+    List<String> user_ids;
 
     Integer nodeNum;
     Integer pairsNum;
 
 
+    /**
+     * for a given friendlist computes centrality measures and forms <code>GraphNode</code> objects.
+     */
     public GraphData(List<AppFriend> friendlist) {
         this.graph = new SingleGraph("Friends graph");
+        this.user_ids = new ArrayList<>();
         this.nodeNum=friendlist.size();
         this.pairsNum=((nodeNum-1)*(nodeNum-2))/2;
         System.out.println("Building computational graph");
-        for (AppFriend f : friendlist) { //building nodes
+        for (AppFriend f : friendlist) { //building nodes and user_ids list
             graph.addNode(f.user_id);
+            user_ids.add(f.user_id);
         }
         for (AppFriend a : friendlist) {  //building edges
             for (AppFriend b : a.friends) {
                 try {
                     graph.addEdge(a.user_id + "_" + b.user_id, a.user_id, b.user_id);
-                } catch (EdgeRejectedException e) {
-                }
+                } catch (EdgeRejectedException e) {/*ignoring not relevant connecitons*/}
+                catch (ElementNotFoundException e){/*ignoring not relevant nodes*/}
             }
         }
         System.out.println("Computing measures");
@@ -47,7 +54,8 @@ public class GraphData {
         for (AppFriend f : friendlist) {
             List<String> connections = new ArrayList<>();
             for (AppFriend a : f.friends) {
-                connections.add(a.user_id);
+                if (user_ids.contains(a.user_id)){         //ignoring not relevant connecitons
+                connections.add(a.user_id);       }
             }
             Node n = graph.getNode(f.user_id);
             Float dc = Float.valueOf(n.getAttribute("dc").toString());
@@ -67,7 +75,7 @@ public class GraphData {
                     f.name,
                     f.nickname,
                     f.gender,
-                    Long.valueOf("1"),
+                    f.picId(),
                     dc,
                     bc,
                     cc,

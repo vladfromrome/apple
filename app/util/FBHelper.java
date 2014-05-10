@@ -18,12 +18,15 @@ import java.util.List;
  * Time: 21:35
  */
 public class FBHelper {
+
+    //<editor-fold desc="Constants">
     private static final String appId = "531369976977751";       //client_id
     private static final String appSecret = "324497e65821722d2af291731994bb54";
     private static final String callbackURL = "http://localhost:9000/fbcallback";
     private static final String permissions = "";
     //private static final String permissions = "publish_actions";
     //private static final String callbackToIndex = "http://localhost:9000/fbcallback";
+    //</editor-fold>
 
     /**
      * @return a fresh instance of facebook4j.facebook object
@@ -206,7 +209,6 @@ public class FBHelper {
 
     /**
      * Deletes all friends and connections for the app user specified
-     *
      * @param user
      */
     //todo raw sql. execute(SqlUpdate sqlUpdate)
@@ -234,5 +236,12 @@ public class FBHelper {
         }
     }
 
-
+    public static AppFriend getFriend(String user_id) throws NullPointerException{
+        try{
+            return AppFriend.FIND.where().eq("user_id",user_id).eq("appUser",getAppUser()).findUnique();
+        } catch (Exception e){
+            Logger.debug("Error while retrieving friend "+user_id+": "+e.toString());
+            return null;
+        }
+    }
 }
