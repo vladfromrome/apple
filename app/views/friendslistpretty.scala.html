@@ -1,0 +1,35 @@
+@(chosenFriend: AppFriend, friendslist: java.util.List[AppFriend])
+@import java.util.List
+
+    <div class="accordion-group">
+        <div class="accordion-heading accordionize">
+            <a class="secondary-toggle accordion-toggle " data-toggle="collapse" data-parent="#"
+            href="#@chosenFriend.user_id">
+                @chosenFriend.name
+                <span class="font-icon-arrow-simple-down"></span>
+            </a>
+        </div>
+        <div id="@chosenFriend.user_id" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>User Id</th>
+                            <th>Picture</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="friends-data" >
+
+            @for(friend <- friendslist) {
+                <tr>
+                    <td>@friend.user_id</td>
+                    <td><img src="@routes.ImageController.getImage(friend.picId())"  alt="This is a profile picture" /></td>
+                    <td>@friend.name</td>
+                </tr>
+            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

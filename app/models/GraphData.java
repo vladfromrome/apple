@@ -25,6 +25,9 @@ public class GraphData {
     Integer nodeNum;
     Integer pairsNum;
 
+    public List<GraphNode> getFriendNodes() {
+        return friendNodes;
+    }
 
     /**
      * for a given friendlist computes centrality measures and forms <code>GraphNode</code> objects.

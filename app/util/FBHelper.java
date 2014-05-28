@@ -166,6 +166,22 @@ public class FBHelper {
     }
 
     /**
+     * @return a String saying who's logged in.
+     */
+    public static String getAppStatusUsername() {
+        String s = "";
+        Facebook fb = getFBInstance();
+        AppUser appUser;
+        try {
+            appUser = AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
+            s = appUser.profile.name;
+        } catch (Exception e) {
+            s = "You are not authenticated.";
+        }
+        return s;
+    }
+
+    /**
      * @return Current AppUser entity loaded from DB
      */
     public static AppUser getAppUser() throws NullPointerException {

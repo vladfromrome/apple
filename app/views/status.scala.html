@@ -2,15 +2,119 @@
 
 App status: @(util.FBHelper.getAppStatus) <br>
 <a href="http://localhost:9000/fblogin">login</a> <br>
-<a href="http://localhost:9000/loadfriends">persist friends profiles and connections into DB</a> <br>
-<a href="http://localhost:9000/fbfriends">view list of friends</a> <br>
-<a href="http://localhost:9000/fbcommon">View common friends with user 1148117708</a> <br>
+<button onclick="loadFriends();">persist friends profiles and connections into DB</button> <br>
+<button onclick="fbFriends();">view list of friends</button> <br>
+<button onclick="fbCommon();">View common friends with user 1148117708</button> <br>
+<button onclick="graph();">Show Graph</button> <br>
 <a href="http://localhost:9000/fblogout">logout</a> <br>
+
+@*<a href="http://localhost:9000/fbfriends">view list of friends</a> <br>*@
+@*<a href="http://localhost:9000/fbcommon">View common friends with user 1148117708</a> <br>*@
+@*<a href="http://localhost:9000/graph">Show Graph</a> <br>*@
 @*<a href="http://localhost:9000/fbclean">clean db</a> <br>*@
 <br>
+
+
+
 <br>
 @if(util.FBHelper.userLogged()){
     Profile picture<br>
 <img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getPictureId)"  alt="This is an image" />  <br>
     }
+<script src="@routes.Assets.at("javascripts/jquery-1.11.0.min.js")"></script>
+
+<div class="modal"><!-- Place at bottom of page --></div>
+<style type="text/css">
+/* Start by setting display:none to make this hidden.
+Then we position it in relation to the viewport window
+with position:fixed. Width, height, top and left speak
+speak for themselves. Background we set to 80% white with
+our animation centered, and no-repeating */
+.modal {
+display : none ;
+position : fixed ;
+z-index : 1000 ;
+top : 0 ;
+left : 0 ;
+height : 100% ;
+width : 100% ;
+background : rgba( 255, 255, 255,.8 ) url( 'http://i.stack.imgur.com/FhHRx.gif' ) 50% 50%
+no-repeat ;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+overflow : hidden ;
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading.modal {
+display : block ;
+}
+</style>
+
+<script type="text/javascript">
+function loadFriends ( ) {
+$.ajax ( {
+url : '/loadfriends',
+success : function ( data, textStatus, jqXHR ) {
+$ ( "body" ).append ( "<div>" + data + "</div>" ) ;
+},
+error : function ( jqXHR, textStatus, errorThrown ) {
+$ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+}
+} ) ;
+
+}
+function fbFriends ( ) {
+$.ajax ( {
+url : '/fbfriends',
+success : function ( data, textStatus, jqXHR ) {
+$ ( "body" ).append ( "<div>" + data + "</div>" ) ;
+},
+error : function ( jqXHR, textStatus, errorThrown ) {
+$ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+}
+} ) ;
+
+}
+
+function fbCommon ( ) {
+$.ajax ( {
+url : '/fbcommon',
+success : function ( data, textStatus, jqXHR ) {
+$ ( "body" ).append ( "<div>" + data + "</div>" ) ;
+},
+error : function ( jqXHR, textStatus, errorThrown ) {
+$ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+}
+} ) ;
+
+}
+
+function graph ( ) {
+$.ajax ( {
+url : '/graph',
+success : function ( data, textStatus, jqXHR ) {
+$ ( "body" ).append ( "<div>" + data + "</div>" ) ;
+},
+error : function ( jqXHR, textStatus, errorThrown ) {
+$ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+}
+} ) ;
+
+}
+
+$ ( document ).ajaxStart ( function ( ) {
+$(".modal" ).show();
+} ) ;
+$ ( document ).ajaxStop ( function ( ) {
+$(".modal" ).hide();
+} ) ;
+
+</script>
+
+
 

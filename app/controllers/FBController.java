@@ -12,9 +12,12 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import util.FBHelper;
+import views.html.friendslistpretty;
+import views.html.graph;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,9 +27,11 @@ import java.util.List;
  */
 public class FBController extends Controller {
 
+//    private static final String logOutUrl = "/status";
+//    private static final String logInUrl = "/status";
+    private static final String logInUrl = "/";
     //<editor-fold desc="Constants">
-    private static final String logOutUrl = "/status";
-    private static final String logInUrl = "/status";
+    private static final String logOutUrl = "/";
     //</editor-fold>
 
     //<editor-fold desc="Results">
@@ -83,8 +88,10 @@ public class FBController extends Controller {
     //</editor-fold>
 
     //<editor-fold desc="Utilities">
+
     /**
      * Forms a friendlist by given list of user_ids.
+     *
      * @return Graph data for the friendlist.
      */
     public static GraphData getGraphData(List<String> friendIds) {
@@ -98,15 +105,15 @@ public class FBController extends Controller {
             return null;
         }
         for (String userId : friendIds) {
-            AppFriend f =   FBHelper.getFriend(userId);
-            if (f!=null){
-            friendlist.add(f);}
-            else {
-                Logger.debug("Friend "+userId+" not found!");
+            AppFriend f = FBHelper.getFriend(userId);
+            if (f != null) {
+                friendlist.add(f);
+            } else {
+                Logger.debug("Friend " + userId + " not found!");
             }
         }
         GraphData graphData = new GraphData(friendlist);
-         return graphData;
+        return graphData;
     }
     //</editor-fold>
 
@@ -130,7 +137,10 @@ public class FBController extends Controller {
 
             //AppUser user = FBHelper.getAppUser().profile.friends=null;
             //return ok();
-            return ok(views.html.friendslist.render(FBHelper.getCommonFriendsWith("1148117708")));
+            //todo: optimize this method, don't search twice for the friend
+            AppFriend friend = AppFriend.FIND.where().eq("user_id", "1148117708").eq("appUser", FBHelper.getAppUser()).findUnique();
+
+            return ok(friendslistpretty.render(friend, FBHelper.getCommonFriendsWith("1148117708")));
         } catch (Exception e) {
             return ok("no common friends or error: " + e.getMessage());
         }
@@ -163,13 +173,24 @@ public class FBController extends Controller {
 
     //for testing purposes
     public static Result testPage() {
-        List<String> ids=new ArrayList<>();
+        List<String> ids = new ArrayList<>();
         ids.add("868290636");
         ids.add("100000288916361");
         ids.add("1140600495");
         return ok(getGraphData(ids).toString());
     }
     //</editor-fold>
+
+    public static Result graph() {
+        final List<AppFriend> allFriends = FBHelper.getAllFriends();
+        allFriends.add(FBHelper.getAppUser().profile);
+//        List<String> q = new LinkedList<>();
+//        q.add("526883024");
+//        q.add("629531241");
+//        q.add("1140600495");
+        final GraphData graphdata = new GraphData(allFriends);
+        return ok(graph.render(graphdata.getFriendNodes()));
+    }
 
 
 }

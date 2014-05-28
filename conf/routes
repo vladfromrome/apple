@@ -18,6 +18,10 @@ GET         /status              controllers.Application.status()
 GET         /loadfriends         controllers.FBController.loadFriends()
 GET         /fbcommon            controllers.FBController.fbcommon()
 GET         /fbtest              controllers.FBController.testPage()
+GET         /graph               controllers.FBController.graph()
+GET         /ajax                controllers.Application.ajax()
+GET         /testAjax            controllers.Application.testAjax()
+
 
 
 # Images

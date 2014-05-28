@@ -1,7 +1,12 @@
 @(friendslist: java.util.List[AppFriend])
 @import java.util.List
-<ol>
     @for(friend <- friendslist) {
-        <li><img src="@routes.ImageController.getImage(friend.picId())"  alt="This is a profile picture" /> -
-            @friend.user_id - @friend.name</li> }
-</ol>
+        <tr>
+            <td>
+                <input name="@friend.name" value="@friend.user_id" type="checkbox">
+            </td>
+            <td>@friend.user_id</td>
+            <td><img src="@routes.ImageController.getImage(friend.picId())"  alt="This is a profile picture" /></td>
+            <td>@friend.name</td>
+        </tr>
+        }

@@ -1,6 +1,77 @@
 /* ==================================================
  Show Functions
  ================================================== */
+function loadFriends ( ) {
+    $.ajax ( {
+        url : '/loadfriends',
+        success : function ( data, textStatus, jqXHR ) {
+//            $ ( "body" ).append( "<div>" + data + "</div>" ) ;
+
+        },
+        error : function ( jqXHR, textStatus, errorThrown ) {
+            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+        }
+    } ) ;
+
+}
+function fbFriends ( ) {
+    $.ajax ( {
+        url : '/fbfriends',
+        success : function ( data, textStatus, jqXHR ) {
+            $("#friends-data" ).html(data) ;
+            showMutualFriends();
+            return;
+        },
+        error : function ( jqXHR, textStatus, errorThrown ) {
+            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+        }
+    } ) ;
+
+}
+
+function fbCommon ( ) {
+    $.ajax ( {
+        url : '/fbcommon',
+        success : function ( data, textStatus, jqXHR ) {
+            $ ( "#toggleArea" ).html (data) ;
+            showSeeGraph ( );
+        },
+        error : function ( jqXHR, textStatus, errorThrown ) {
+            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+        }
+    } ) ;
+
+}
+
+function graph ( ) {
+    $.ajax ( {
+        url : '/graph',
+        success : function ( data, textStatus, jqXHR ) {
+            $ ( "body" ).append(data) ;
+        },
+        error : function ( jqXHR, textStatus, errorThrown ) {
+            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+        }
+    } ) ;
+
+}
+
+$ ( document ).ajaxStart ( function ( ) {
+    $(".modal" ).show();
+} ) ;
+$ ( document ).ajaxStop ( function ( ) {
+    $(".modal" ).hide();
+} ) ;
+
+function getFriends(){
+    loadFriends();
+    fbFriends();
+}
+
+function getMutualFriends(){
+    fbCommon();
+}
+
 function showMutualFriends() {
     $('#get-mutual-friends').removeClass('hidden');
     $('#get-mutual-friends-li').removeClass('hidden');

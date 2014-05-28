@@ -13,18 +13,18 @@ public class GraphNode {
 
     List<String> connections;
 
-    public String user_id;
-    public String name;
-    public String nickname;
-    public String gender;
-    public Long pictureId;
+    private String user_id;
+    private String name;
+    private String nickname;
+    private String gender;
+    private Long pictureId;
 
-    public String dc;
-    public String bc;
-    public String cc;
-    public String dc_n;
-    public String bc_n;
-    public String cc_n;
+    private String dc;
+    private String bc;
+    private String cc;
+    private String dc_n;
+    private String bc_n;
+    private String cc_n;
 
     public GraphNode(List<String> connections,String user_id, String name,String nickname, String gender, Long pictureId,Float dc, Float bc, Float cc, Float dc_n, Float bc_n, Float cc_n) {
         this.connections=connections;
@@ -45,6 +45,53 @@ public class GraphNode {
         this.cc_n = formatter.format(cc_n);
     }
 
+    public List<String> getConnections() {
+        return connections;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public Long getPictureId() {
+        return pictureId;
+    }
+
+    public String getDc() {
+        return dc;
+    }
+
+    public String getBc() {
+        return bc;
+    }
+
+    public String getCc() {
+        return cc;
+    }
+
+    public String getDc_n() {
+        return dc_n;
+    }
+
+    public String getBc_n() {
+        return bc_n;
+    }
+
+    public String getCc_n() {
+        return cc_n;
+    }
 
     @Override
     public String toString() {
