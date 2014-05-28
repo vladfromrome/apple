@@ -115,9 +115,26 @@ public class FBController extends Controller {
         GraphData graphData = new GraphData(friendlist);
         return graphData;
     }
+
+    /*public static List<AppFriend> getCommonFriendsWith(List<String> friendIds){
+
+
+    }*/
     //</editor-fold>
 
     //<editor-fold desc="Test&Debug">
+    public static Result checkGraph() {
+        //GraphData graphData = new GraphData(FBHelper.getAllFriends());
+        List<String> q = new ArrayList<>();
+        q.add("526883024");
+        q.add("629531241");
+        q.add("1140600495");
+        GraphData graphData = getGraphData(q);
+        Logger.debug(graphData.toString());
+        return ok(graphData.toString());
+    }
+
+
     //for testing purposes
     public static Result postMsg() {
         String message = "Bazinga! fb api test.";

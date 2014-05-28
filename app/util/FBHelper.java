@@ -200,21 +200,14 @@ public class FBHelper {
     }
 
     /**
-     * @return String of the user, that is currently logged in
+     * @return a String with name of the user, that is currently logged in
      */
     //TODO Store user name in cookies.
     public static String getAppUserName() throws NullPointerException {
         return getAppUser().profile.name;
     }
 
-    /**
-     * @param friendId
-     * @return a list of common friends of current user and friend with Id = friendId
-     */
-    public static List<AppFriend> getCommonFriendsWith(String friendId) throws NullPointerException {
-        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", friendId).eq("appUser", getAppUser()).findUnique().friends;
-        return cf.subList(1, cf.size() - 1);
-    }
+
 
     /**
      * @return a list of friends of current user
@@ -252,6 +245,10 @@ public class FBHelper {
         }
     }
 
+    /**
+     * @return a friend of the current user given his facebook user_id
+     * @param user_id
+     */
     public static AppFriend getFriend(String user_id) throws NullPointerException{
         try{
             return AppFriend.FIND.where().eq("user_id",user_id).eq("appUser",getAppUser()).findUnique();
@@ -259,5 +256,14 @@ public class FBHelper {
             Logger.debug("Error while retrieving friend "+user_id+": "+e.toString());
             return null;
         }
+    }
+
+    /**
+     * @param friendId
+     * @return a list of common friends of current user and friend with Id = friendId
+     */
+    public static List<AppFriend> getCommonFriendsWith(String friendId) throws NullPointerException {
+        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", friendId).eq("appUser", getAppUser()).findUnique().friends;
+        return cf.subList(1, cf.size() - 1);
     }
 }
