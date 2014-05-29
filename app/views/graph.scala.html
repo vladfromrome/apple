@@ -2,42 +2,6 @@
 @import java.util.List
 
 
-    <!-- START SIGMA IMPORTS -->
-<script src="@routes.Assets.at("javascripts/sigma.js/src/sigma.core.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/conrad.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/utils/sigma.utils.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/utils/sigma.polyfills.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/sigma.settings.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.dispatcher.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.configurable.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.graph.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.camera.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.quad.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/captors/sigma.captors.mouse.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/captors/sigma.captors.touch.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/sigma.renderers.canvas.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/sigma.renderers.webgl.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/sigma.renderers.def.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.nodes.def.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.nodes.fast.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.edges.def.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.edges.fast.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.edges.arrow.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.labels.def.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.hovers.def.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.nodes.def.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.def.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.curve.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.arrow.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/middlewares/sigma.middlewares.rescale.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/middlewares/sigma.middlewares.copy.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.animation.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.bindEvents.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.drawHovers.js")"></script>
-    <!-- END SIGMA IMPORTS -->
-<script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/shape-library.js")"></script>
-<script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/sigma.renderers.customShapes.js")"></script>
 <div id="container">
 
     <style type="text/css">
@@ -47,12 +11,14 @@
     margin : auto ;
     height : 600px ;
     max-width : 800px ;
+    background : white ;
     }
     </style>
 
     <div id="graph-container"></div>
 </div>
 <script>
+function initSigma ( ) {
 /**
 * IMPORTANT: This only works with the canvas renderer.TBD in the future
 * will also support the WebGL renderer.
@@ -79,10 +45,10 @@ colors =[
 ] ;
 i = 0 ;
     @for(node <- graphnodes) {
-        var id = ' @routes.ImageController.getImage(node.getPictureId) ';
+        var id = '  @routes.ImageController.getImage(node.getPictureId) ';
         var node = {
-        id : ' @node.getUser_id ',
-        label : ' @node.getName ',
+        id : '  @node.getUser_id ',
+        label : '  @node.getName ',
         // note the ShapeLibrary.enumerate() returns the names of all
         // supported renderers
         type : 'circle',
@@ -90,19 +56,19 @@ i = 0 ;
         y : Math.random ( ),
         size : 10,
         color : colors[ Math.floor ( Math.random ( ) * colors.length ) ],
-        nickname:'@node.getNickname',
-        gender:'@node.getGender',
-        bc: '@node.getBc',
-        cc: '@node.getCc',
-        dc: '@node.getDc',
-        bc_n: '@node.getBc_n',
-        cc_n: '@node.getCc_n',
-        dc_n: '@node.getDc_n'
+        nickname : ' @node.getNickname ',
+        gender : ' @node.getGender ',
+        bc : ' @node.getBc ',
+        cc : ' @node.getCc ',
+        dc : ' @node.getDc ',
+        bc_n : ' @node.getBc_n ',
+        cc_n : ' @node.getCc_n ',
+        dc_n : ' @node.getDc_n '
         //    borderColor: colors[Math.floor(Math.random()* colors.length)]
         } ;
 
         node.image = {
-        url : ' @routes.ImageController.getImage(node.getPictureId) ',
+        url : '  @routes.ImageController.getImage(node.getPictureId) ',
         // scale/clip are ratio values applied on top of 'size'
         scale : 1.3,
         clip : 0.95
@@ -122,8 +88,8 @@ i = 0 ;
 
             g.edges.push ( {
             id : 'e' + i,
-            source : ' @node.getUser_id ',
-            target : ' @e ',
+            source : '  @node.getUser_id ',
+            target : '  @e ',
             size : Math.random ( )
             } ) ;
             i ++ ;
@@ -149,33 +115,29 @@ maxNodeSize : 16
 CustomShapes.init ( s ) ;
 s.refresh ( ) ;
 
-function fillModal(e) {
-    console.log("filling:"+ e.data.node.label);
-    $("#modal-name" ).text(e.data.node.label);
-    $("#modal-nickname" ).text(e.data.node.nickname);
-    $("#modal-gender" ).text(e.data.node.gender);
-    $("#modal-bc" ).text(e.data.node.bc);
-    $("#modal-cc" ).text(e.data.node.cc);
-    $("#modal-dc" ).text(e.data.node.dc);
-    $("#modal-bc_n" ).text(e.data.node.bc_n);
-    $("#modal-cc_n" ).text(e.data.node.cc_n);
-    $("#modal-dc_n" ).text(e.data.node.cc_n);
+function fillModal ( e ) {
+console.log ( "filling:" + e.data.node.label ) ;
+$ ( "#modal-name" ).text ( e.data.node.label ) ;
+$ ( "#modal-nickname" ).text ( e.data.node.nickname ) ;
+$ ( "#modal-gender" ).text ( e.data.node.gender ) ;
+$ ( "#modal-bc" ).text ( e.data.node.bc ) ;
+$ ( "#modal-cc" ).text ( e.data.node.cc ) ;
+$ ( "#modal-dc" ).text ( e.data.node.dc ) ;
+$ ( "#modal-bc_n" ).text ( e.data.node.bc_n ) ;
+$ ( "#modal-cc_n" ).text ( e.data.node.cc_n ) ;
+$ ( "#modal-dc_n" ).text ( e.data.node.cc_n ) ;
 }
-s.bind('clickNode', function(e) {
-    fillModal(e);
-    $('#myModal').modal('toggle');
-    console.log(e.type);
-});
+s.bind ( 'clickNode', function ( e ) {
+    fillModal ( e ) ;
+    $ ( '#myModal' ).modal ( 'toggle' ) ;
+    console.log ( e.type ) ;
+} );
+
+}
+
+initSigma ( ) ;
 
 </script>
-
-    <!-- Bootstrap -->
-<link href="@routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
-    <!-- Js -->
-<script src="@routes.Assets.at("javascripts/jquery-1.11.0.min.js")"></script>
-    <!-- jQuery Core -->
-<script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
-    <!-- Bootstrap -->
 
     <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -186,7 +148,6 @@ s.bind('clickNode', function(e) {
                 <h4 class="modal-title" id="myModalLabel">User Info</h4>
             </div>
             <div class="modal-body">
-                <img id="modal-img"></img>
                 <p>Name: <span id="modal-name"></span></p>
                 <p>Nickname: <span id="modal-nickname"></span></p>
                 <p>Gender: <span id="modal-gender"></span></p>

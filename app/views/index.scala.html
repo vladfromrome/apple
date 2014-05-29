@@ -48,7 +48,7 @@
                         href="#twoArea" onclick="getMutualFriends ( ) ;">
                             Get Mutual Friends</a></li>
                         <li id="see-graph-li" class="hidden"><a class="external" data-toggle="collapse" data-parent="#accordionArea"
-                        href="#threeArea" >See Graph</a></li>
+                        href="#threeArea" onclick="graph();" >See Graph</a></li>
                         <li><a href="http://localhost:9000/fblogout" class="external">Log Out</a></li>
                     </ul>
                 </nav>
@@ -168,7 +168,7 @@
 
                         <div class="accordion-heading accordionize">
                             <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordionArea"
-                            href="http://localhost:9000/graph">
+                            onclick="graph();">
                                 See Graph
                             </a>
                         </div>
@@ -183,7 +183,7 @@
                 </div>
             </div>
                 <!-- End Accordion -->
-            <div class="modal"><!-- Place at bottom of page --></div>
+            <div class="modal-loader"><!-- Place at bottom of page --></div>
 
         </div>
         <!-- End Our Work Section -->
@@ -225,13 +225,52 @@
         <!-- Tweet -->
         <script src="@routes.Assets.at("javascripts/plugins.js")"></script>
         <!-- Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi -->
-        <script src="@routes.Assets.at("javascripts/main.js")"></script>
-        <!-- Default JS -->
-        <!-- End Js -->
+
+    <!-- START SIGMA IMPORTS -->
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/sigma.core.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/conrad.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/utils/sigma.utils.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/utils/sigma.polyfills.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/sigma.settings.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.dispatcher.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.configurable.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.graph.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.camera.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/classes/sigma.classes.quad.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/captors/sigma.captors.mouse.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/captors/sigma.captors.touch.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/sigma.renderers.canvas.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/sigma.renderers.webgl.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/sigma.renderers.def.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.nodes.def.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.nodes.fast.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.edges.def.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.edges.fast.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/webgl/sigma.webgl.edges.arrow.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.labels.def.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.hovers.def.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.nodes.def.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.def.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.curve.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.arrow.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/middlewares/sigma.middlewares.rescale.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/middlewares/sigma.middlewares.copy.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.animation.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.bindEvents.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.drawHovers.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/shape-library.js")"></script>
+    <script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/sigma.renderers.customShapes.js")"></script>
+    <!-- END SIGMA IMPORTS -->
+
+    <script src="@routes.Assets.at("javascripts/main.js")"></script>
+    <!-- Default JS -->
+
+    <!-- End Js -->
 
         <style type="text/css">
 
-        .modal {
+        .modal-loader {
         display : none ;
         position : fixed ;
         z-index : 1000 ;
@@ -252,7 +291,7 @@
 
         /* Anytime the body has the loading class, our
            modal element will be visible */
-        body.loading.modal {
+        body.loading.modal-loader {
         display : block ;
         }
         </style>

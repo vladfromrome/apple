@@ -34,8 +34,9 @@ function fbCommon ( ){
     }
     appRoutes.controllers.FBController.fbcommon(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
-            $ ( "#toggleArea" ).html (data) ;
-            showSeeGraph ( );
+            $ ("#toggleArea").html(data) ;
+            showSeeGraph();
+
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
@@ -45,16 +46,16 @@ function fbCommon ( ){
 }
 
 function graph ( ) {
-    $.ajax ( {
-        url : '/graph',
-            success : function ( data, textStatus, jqXHR ) {
-            $ ( "body" ).append(data) ;
+    appRoutes.controllers.FBController.graph().ajax({
+        success : function ( data, textStatus, jqXHR ) {
+            $ ( "#graph" ).html(data) ;
+            $ ( "#twoArea" ).collapse("hide") ;
+            $ ( "#threeArea" ).collapse("toggle") ;
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
         }
-    } ) ;
-
+    });
 }
 
 $ ( document ).ajaxStart ( function ( ) {
