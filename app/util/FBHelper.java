@@ -99,7 +99,9 @@ public class FBHelper {
         AppUser appUser = new AppUser(fbUser.getId(),
                 fbUser.getName(), fbUser.getUsername(),
                 fbUser.getGender(), fbUser.getLink().toString(),
-                fb.users().getPictureURL(fbUser.getId(), PictureSize.square).toString());
+                fb.users().getPictureURL(fbUser.getId(), PictureSize.square).toString(),
+                fb.users().getPictureURL(fbUser.getId(), PictureSize.large).toString()
+        );
         return appUser;
     }
 
@@ -111,7 +113,7 @@ public class FBHelper {
      */
     //TODO Optimize fetching. Fetch in one api call and one ebean transaction.
     public static void loadFriends() throws FacebookException {
-        if (getAppUser().friendEntities.size() > 0) {    //todo. add deleteFriends(getAppUser());
+        if (getAppUser().friendEntities.size() > 0) {    //todo. add upd or deleteFriends(getAppUser());
             return;
         }
 
@@ -138,6 +140,8 @@ public class FBHelper {
         //for each user's friend:
         //add:user and mutual friends
         List<AppFriend> appUserFriends = appUser.profile.friends;
+        /*Ebean.beginTransaction();
+        try {*/
         for (AppFriend af : appUserFriends) {
             af.friends.add(appUser.profile);
             ResponseList<Friend> mutualFs = fb.getMutualFriends(af.user_id);
@@ -147,6 +151,9 @@ public class FBHelper {
             Logger.debug("Persisting friend: " + af.toString());
             af.save();
         }
+        /*} finally {
+            Ebean.endTransaction();
+        }*/
     }
 
     /**
@@ -247,23 +254,25 @@ public class FBHelper {
 
     /**
      * @return a friend of the current user given his facebook user_id
-     * @param user_id
+     * @param fb_user_id
      */
-    public static AppFriend getFriend(String user_id) throws NullPointerException{
+    public static AppFriend getFriend(String fb_user_id) throws NullPointerException{
         try{
-            return AppFriend.FIND.where().eq("user_id",user_id).eq("appUser",getAppUser()).findUnique();
+            return AppFriend.FIND.where().eq("user_id",fb_user_id).eq("appUser",getAppUser()).findUnique();
         } catch (Exception e){
-            Logger.debug("Error while retrieving friend "+user_id+": "+e.toString());
+            Logger.debug("Error while retrieving friend "+fb_user_id+": "+e.toString());
             return null;
         }
     }
 
     /**
-     * @param friendId
-     * @return a list of common friends of current user and friend with Id = friendId
+     * @param fb_user_id
+     * @return a list of common friends of current user and friend with facebook Id = friendId
      */
-    public static List<AppFriend> getCommonFriendsWith(String friendId) throws NullPointerException {
-        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", friendId).eq("appUser", getAppUser()).findUnique().friends;
+    public static List<AppFriend> getCommonFriendsWith(String fb_user_id) throws NullPointerException {
+        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique().friends;
         return cf.subList(1, cf.size() - 1);
     }
+
+
 }

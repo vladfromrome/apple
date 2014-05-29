@@ -17,22 +17,30 @@ public class AppUser extends Model{
     public Long id;
     public static Finder<Long,AppUser> FIND = new Finder<>(Long.class, AppUser.class);
 
+    @OneToOne(cascade = CascadeType.ALL)
+    public Image bigPicture;
     @OneToOne(cascade = CascadeType.REMOVE)
     public AppFriend profile;
     @OneToMany(mappedBy = "appUser")
     public List<AppFriend> friendEntities;
 
+
     /**
      * autosaves new user into DB
      */
-    public AppUser(String user_id, String name, String nickname, String gender, String link, String profileImageLink) {
+    public AppUser(String user_id, String name, String nickname, String gender, String link, String profileImageLink, String bigPictureLink) {
         this.profile = new AppFriend(this,user_id,name,nickname,gender,link,profileImageLink);
+        this.bigPicture =new Image(bigPictureLink);
         this.profile.save();
         this.save();
     }
 
     public Long getPictureId(){
         return this.profile.picture.id;
+    }
+
+    public Long getBigPicId(){
+        return this.bigPicture.id;
     }
 
     @Override

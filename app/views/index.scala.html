@@ -82,7 +82,7 @@
                                         <span class="overlay-text-thumb">CTO/Founder</span>
                                     </div>
                                     @if(util.FBHelper.userLogged()) {
-                                        <img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getPictureId)" alt="This is an image" />
+                                        <img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getBigPicId)" alt="This is an image" />
                                     } else {
                                         <img src="@routes.Assets.at("images/work/thumbs/image-01.jpg")" alt="John Doe">
                                         }
