@@ -155,10 +155,8 @@ public class FBController extends Controller {
         return ok();
     }
 
-    //for testing purposes
     public static Result fbcommon(String ids) {
         try {
-            System.out.println("DATA" + ids);
             String[] userIDs = ids.split(",");
             System.out.println("userIDs = " + Arrays.toString(userIDs));
             Map<AppFriend, List<AppFriend>> allCommonFriends = new HashMap<>();
