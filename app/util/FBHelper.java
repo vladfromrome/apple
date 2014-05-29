@@ -10,6 +10,7 @@ import models.AppUser;
 import play.Logger;
 import play.mvc.Http.Context;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -269,8 +270,12 @@ public class FBHelper {
      */
     public static List<AppFriend> getCommonFriendsWith(String fb_user_id) throws NullPointerException {
         List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique().friends;
+        String currentUserFbId = getAppUser().profile.user_id;
+        for (int i=0;i<cf.size();i++){
+            if (cf.get(i).user_id.equals(currentUserFbId)) cf.remove(i); //removing current user from the list of common friends
+        }
         Collections.sort(cf);
-        return cf.subList(1, cf.size() - 1);
+        return cf;
     }
     //</editor-fold>
 
