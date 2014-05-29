@@ -10,6 +10,7 @@ import models.AppUser;
 import play.Logger;
 import play.mvc.Http.Context;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class FBHelper {
     //private static final String callbackToIndex = "http://localhost:9000/fbcallback";
     //</editor-fold>
 
+    //<editor-fold desc="FB object mngmnt, login/logout and appStatus">
     /**
      * @return a fresh instance of facebook4j.facebook object
      */
@@ -50,6 +52,8 @@ public class FBHelper {
         }
         return facebook;
     }
+
+
 
     /**
      * @return a url to redirect user to in order to login.
@@ -92,6 +96,24 @@ public class FBHelper {
         Logger.info("Logged out successfully.");
     }
 
+    /**
+     * @return a String describing application status.
+     */
+    public static String getAppStatus() {
+        String s = "";
+        Facebook fb = getFBInstance();
+        AppUser appUser;
+        try {
+            appUser = AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
+            s = "You are logged in as " + appUser.profile.name;
+        } catch (Exception e) {
+            s = "You are not authenticated.";
+        }
+        return s;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Users and Friends persistence">
     /**
      * Persists a facebook user entity into DB as application user.
      */
@@ -157,73 +179,6 @@ public class FBHelper {
     }
 
     /**
-     * @return a String saying who's logged in.
-     */
-    public static String getAppStatus() {
-        String s = "";
-        Facebook fb = getFBInstance();
-        AppUser appUser;
-        try {
-            appUser = AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
-            s = "You are logged in as " + appUser.profile.name;
-        } catch (Exception e) {
-            s = "You are not authenticated.";
-        }
-        return s;
-    }
-
-    /**
-     * @return a String saying who's logged in.
-     */
-    public static String getAppStatusUsername() {
-        String s = "";
-        Facebook fb = getFBInstance();
-        AppUser appUser;
-        try {
-            appUser = AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
-            s = appUser.profile.name;
-        } catch (Exception e) {
-            s = "You are not authenticated.";
-        }
-        return s;
-    }
-
-    /**
-     * @return Current AppUser entity loaded from DB
-     */
-    public static AppUser getAppUser() throws NullPointerException {
-        return AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
-    }
-
-    //Bool Get User
-    public static boolean userLogged(){
-        try {
-            getAppUser();
-            return true;
-        } catch (Exception e) {
-            Logger.debug("User not logged in.");
-            return false;
-        }
-    }
-
-    /**
-     * @return a String with name of the user, that is currently logged in
-     */
-    //TODO Store user name in cookies.
-    public static String getAppUserName() throws NullPointerException {
-        return getAppUser().profile.name;
-    }
-
-
-
-    /**
-     * @return a list of friends of current user
-     */
-    public static List<AppFriend> getAllFriends() throws NullPointerException {
-        return AppFriend.FIND.where().eq("appUser", getAppUser()).findList();
-    }
-
-    /**
      * Deletes all friends and connections for the app user specified
      * @param user
      */
@@ -251,6 +206,49 @@ public class FBHelper {
             auf.delete();
         }
     }
+    //</editor-fold>
+
+
+
+    //<editor-fold desc="Current user utils">
+
+    /**
+     * @return Current AppUser entity loaded from DB
+     */
+    public static AppUser getAppUser() throws NullPointerException {
+        return AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
+    }
+
+    //Bool Get User
+    public static boolean userLogged(){
+        try {
+            getAppUser();
+            return true;
+        } catch (Exception e) {
+            Logger.debug("User not logged in.");
+            return false;
+        }
+    }
+
+    /**
+     * @return a String with name of the user, that is currently logged in
+     */
+    //TODO Store user name in cookies.
+    public static String getAppUserName() throws NullPointerException {
+        return getAppUser().profile.name;
+    }
+    //</editor-fold>
+
+
+
+    //<editor-fold desc="Fetching friends from DB">
+    /**
+     * @return a list of friends of current user
+     */
+    public static List<AppFriend> getAllFriends() throws NullPointerException {
+        return AppFriend.FIND.where().eq("appUser", getAppUser()).orderBy("name").findList();
+    }
+
 
     /**
      * @return a friend of the current user given his facebook user_id
@@ -271,8 +269,10 @@ public class FBHelper {
      */
     public static List<AppFriend> getCommonFriendsWith(String fb_user_id) throws NullPointerException {
         List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique().friends;
+        Collections.sort(cf);
         return cf.subList(1, cf.size() - 1);
     }
+    //</editor-fold>
 
 
 }

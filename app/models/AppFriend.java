@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "friends")
-public class AppFriend extends Model{
+public class AppFriend extends Model implements Comparable<AppFriend>{
     //<editor-fold desc="Fields">
     @Id
     public Long id;
@@ -76,5 +76,10 @@ public class AppFriend extends Model{
                 ", name='" + name + '\'' +
                 ", has "+friends.size()+" friends"+
                 '}';
+    }
+
+    @Override
+    public int compareTo(AppFriend o) {
+        return this.name.compareTo(o.name);
     }
 }

@@ -182,6 +182,19 @@ public class FBController extends Controller {
     }
 
     //for testing purposes
+    public static Result fbcommontest() {
+        try {
+
+            //AppUser user = FBHelper.getAppUser().profile.friends=null;
+            //return ok();
+            //return ok(views.html.friendslist.render(FBHelper.getCommonFriendsWith("1148117708")));
+            return ok(views.html.friendslist.render(FBHelper.getCommonFriendsWith("1140600495")));
+        } catch (Exception e) {
+            return ok("no common friends or error: " + e.getMessage());
+        }
+    }
+
+    //for testing purposes
     public static Result fbtest() {
         Facebook fb = FBHelper.getFBInstance();
         try {

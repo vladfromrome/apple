@@ -22,6 +22,7 @@ GET         /graph               controllers.FBController.graph()
 GET         /ajax                controllers.Application.ajax()
 GET         /testAjax            controllers.Application.testAjax()
 GET         /jsRoutes            controllers.FBController.jsRoutes()
+GET         /fbcommontest        controllers.FBController.fbcommontest
 
 
 
