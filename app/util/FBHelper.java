@@ -277,6 +277,15 @@ public class FBHelper {
         Collections.sort(cf);
         return cf;
     }
+
+    public static List<AppFriend> getFriendsfromFbIds(List<String> ids){
+        List<AppFriend> flist = new ArrayList<AppFriend>();
+        for (String fb_user_id: ids){
+            flist.add(AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique());
+        }
+        Collections.sort(flist);
+        return flist;
+    }
     //</editor-fold>
 
 
