@@ -2,7 +2,7 @@
 @import java.util.List
 
 
-<!-- START SIGMA IMPORTS -->
+    <!-- START SIGMA IMPORTS -->
 <script src="@routes.Assets.at("javascripts/sigma.js/src/sigma.core.js")"></script>
 <script src="@routes.Assets.at("javascripts/sigma.js/src/conrad.js")"></script>
 <script src="@routes.Assets.at("javascripts/sigma.js/src/utils/sigma.utils.js")"></script>
@@ -35,29 +35,29 @@
 <script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.animation.js")"></script>
 <script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.bindEvents.js")"></script>
 <script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.drawHovers.js")"></script>
-<!-- END SIGMA IMPORTS -->
+    <!-- END SIGMA IMPORTS -->
 <script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/shape-library.js")"></script>
 <script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/sigma.renderers.customShapes.js")"></script>
 <div id="container">
 
     <style type="text/css">
     #graph-container {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: absolute;
+    position : relative ;
+    overflow : hidden ;
+    margin : auto ;
+    height : 600px ;
+    max-width : 800px ;
     }
-        </style>
+    </style>
 
     <div id="graph-container"></div>
 </div>
 <script>
 /**
-* IMPORTANT: This only works with the canvas renderer. TBD in the future
+* IMPORTANT: This only works with the canvas renderer.TBD in the future
 * will also support the WebGL renderer.
 */
-sigma.utils.pkg('sigma.canvas.nodes');
+sigma.utils.pkg ( 'sigma.canvas.nodes' ) ;
 
 // generate a random graph
 var i,
@@ -66,78 +66,140 @@ img,
 N = 100,
 E = 500,
 g = {
-nodes: [],
-edges: []
+nodes :[ ],
+edges :[ ]
 },
-urls = [
-    ],
-colors = [
+urls =[
+],
+colors =[
 '#000000',
 '#668f3c',
 '#c6583e',
 '#b956af'
-];
-    i = 0;
+] ;
+i = 0 ;
     @for(node <- graphnodes) {
-    var id = '@routes.ImageController.getImage(node.getPictureId)';
-    var node = {
-    id: '@node.getUser_id',
-    label: '@node.getName',
-    // note the ShapeLibrary.enumerate() returns the names of all
-    // supported renderers
-    type: 'circle',
-    x: Math.random(),
-    y: Math.random(),
-    size: 10,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    //    borderColor: colors[Math.floor(Math.random()* colors.length)]
-    };
+        var id = ' @routes.ImageController.getImage(node.getPictureId) ';
+        var node = {
+        id : ' @node.getUser_id ',
+        label : ' @node.getName ',
+        // note the ShapeLibrary.enumerate() returns the names of all
+        // supported renderers
+        type : 'circle',
+        x : Math.random ( ),
+        y : Math.random ( ),
+        size : 10,
+        color : colors[ Math.floor ( Math.random ( ) * colors.length ) ],
+        nickname:'@node.getNickname',
+        gender:'@node.getGender',
+        bc: '@node.getBc',
+        cc: '@node.getCc',
+        dc: '@node.getDc',
+        bc_n: '@node.getBc_n',
+        cc_n: '@node.getCc_n',
+        dc_n: '@node.getDc_n'
+        //    borderColor: colors[Math.floor(Math.random()* colors.length)]
+        } ;
 
-    node.image = {
-    url: '@routes.ImageController.getImage(node.getPictureId)',
-    // scale/clip are ratio values applied on top of 'size'
-    scale: 1.3,
-    clip: 0.95
-    };
+        node.image = {
+        url : ' @routes.ImageController.getImage(node.getPictureId) ',
+        // scale/clip are ratio values applied on top of 'size'
+        scale : 1.3,
+        clip : 0.95
+        } ;
 
-    g.nodes.push(node);
-    i++;
+        g.nodes.push ( node ) ;
+        i ++ ;
 
     }
 
 
 
-i = 0;
-@for(node <- graphnodes) {
-    @for(e <- node.getConnections) {
+i = 0 ;
+    @for(node <- graphnodes) {
+        @for(e <- node.getConnections) {
 
 
-g.edges.push({
-id: 'e' + i,
-source: '@node.getUser_id',
-target: '@e',
-size: Math.random()
-});
-i++;
-}
+            g.edges.push ( {
+            id : 'e' + i,
+            source : ' @node.getUser_id ',
+            target : ' @e ',
+            size : Math.random ( )
+            } ) ;
+            i ++ ;
+        }
 
 
-}
+    }
 
-s = new sigma({
-graph: g,
-renderer: {
+s = new sigma ( {
+graph : g,
+renderer : {
 // IMPORTANT:
 // This works only with the canvas renderer, so the
 // renderer type set as "canvas" is necessary here.
-container: document.getElementById('graph-container'),
-type: 'canvas'
+container : document.getElementById ( 'graph-container' ),
+type : 'canvas'
 },
-settings: {
-minNodeSize: 8,
-maxNodeSize: 16
+settings : {
+minNodeSize : 8,
+maxNodeSize : 16
 }
+} ) ;
+CustomShapes.init ( s ) ;
+s.refresh ( ) ;
+
+function fillModal(e) {
+    console.log("filling:"+ e.data.node.label);
+    $("#modal-name" ).text(e.data.node.label);
+    $("#modal-nickname" ).text(e.data.node.nickname);
+    $("#modal-gender" ).text(e.data.node.gender);
+    $("#modal-bc" ).text(e.data.node.bc);
+    $("#modal-cc" ).text(e.data.node.cc);
+    $("#modal-dc" ).text(e.data.node.dc);
+    $("#modal-bc_n" ).text(e.data.node.bc_n);
+    $("#modal-cc_n" ).text(e.data.node.cc_n);
+    $("#modal-dc_n" ).text(e.data.node.cc_n);
+}
+s.bind('clickNode', function(e) {
+    fillModal(e);
+    $('#myModal').modal('toggle');
+    console.log(e.type);
 });
-CustomShapes.init(s);
-s.refresh();
+
 </script>
+
+    <!-- Bootstrap -->
+<link href="@routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+    <!-- Js -->
+<script src="@routes.Assets.at("javascripts/jquery-1.11.0.min.js")"></script>
+    <!-- jQuery Core -->
+<script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+    <!-- Bootstrap -->
+
+    <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">User Info</h4>
+            </div>
+            <div class="modal-body">
+                <img id="modal-img"></img>
+                <p>Name: <span id="modal-name"></span></p>
+                <p>Nickname: <span id="modal-nickname"></span></p>
+                <p>Gender: <span id="modal-gender"></span></p>
+                <p>Degree Centrality: <span id="modal-dc"></span></p>
+                <p>Normalized Degree Centrality: <span id="modal-dc_n"></span></p>
+                <p>Betweenness Centrality: <span id="modal-bc"></span></p>
+                <p>Normalized Betweennness Centrality: <span id="modal-bc_n"></span></p>
+                <p>Closeness Centrality: <span id="modal-cc"></span></p>
+                <p>Normalized CLoseness Centrality: <span id="modal-cc_n"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -86,9 +86,7 @@ function showSeeGraph() {
 }
 
 jQuery(function ($) {
-
     var BRUSHED = window.BRUSHED || {};
-
 
     /* ==================================================
      Mobile Navigation
