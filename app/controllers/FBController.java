@@ -9,6 +9,7 @@ import models.AppUser;
 import models.GraphData;
 import models.Image;
 import play.Logger;
+import play.Routes;
 import play.mvc.Controller;
 import play.mvc.Result;
 import util.FBHelper;
@@ -16,9 +17,7 @@ import views.html.friendslistpretty;
 import views.html.graph;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Author: Vladimir Romanov
@@ -27,7 +26,7 @@ import java.util.List;
  */
 public class FBController extends Controller {
 
-//    private static final String logOutUrl = "/status";
+    //    private static final String logOutUrl = "/status";
 //    private static final String logInUrl = "/status";
     private static final String logInUrl = "/";
     //<editor-fold desc="Constants">
@@ -42,6 +41,11 @@ public class FBController extends Controller {
 //        Ebean.delete(AppFriend.FIND.all());
         FBHelper.deleteFriends(FBHelper.getAppUser());
         return ok("DB is clean.");
+    }
+
+    public static Result jsRoutes() {
+        response().setContentType("text/javascript");
+        return ok(Routes.javascriptRouter("appRoutes", controllers.routes.javascript.FBController.fbcommon()));
     }
 
     public static Result logIn() {
@@ -128,7 +132,6 @@ public class FBController extends Controller {
         List<String> q = new ArrayList<>();
         q.add("526883024");
         q.add("629531241");
-        q.add("1140600495");
         GraphData graphData = getGraphData(q);
         Logger.debug(graphData.toString());
         return ok(graphData.toString());
@@ -149,15 +152,26 @@ public class FBController extends Controller {
     }
 
     //for testing purposes
-    public static Result fbcommon() {
+    public static Result fbcommon(String ids) {
         try {
+            System.out.println("DATA"+  ids);
+            String[] userIDs = ids.split(",");
+            System.out.println("userIDs = " + Arrays.toString(userIDs));
+            Map<AppFriend,List<AppFriend>> allCommonFriends = new HashMap<>();
+            for (String userID : userIDs) {
+                AppFriend friend = AppFriend.FIND.where().eq("user_id", userID).eq("appUser", FBHelper.getAppUser()).findUnique();
+                System.out.println("friend = " + friend);
+                List<AppFriend> commonFriends = FBHelper.getCommonFriendsWith(userID);
+                System.out.println("commonFriends = " + commonFriends);
+                allCommonFriends.put(friend, commonFriends);
+            }
 
             //AppUser user = FBHelper.getAppUser().profile.friends=null;
             //return ok();
             //todo: optimize this method, don't search twice for the friend
-            AppFriend friend = AppFriend.FIND.where().eq("user_id", "1148117708").eq("appUser", FBHelper.getAppUser()).findUnique();
+//            AppFriend friend = AppFriend.FIND.where().eq("user_id", ids).eq("appUser", FBHelper.getAppUser()).findUnique();
 
-            return ok(friendslistpretty.render(friend, FBHelper.getCommonFriendsWith("1148117708")));
+            return ok(friendslistpretty.render(allCommonFriends));
         } catch (Exception e) {
             return ok("no common friends or error: " + e.getMessage());
         }
@@ -199,15 +213,15 @@ public class FBController extends Controller {
     //</editor-fold>
 
     public static Result graph() {
-        final List<AppFriend> allFriends = FBHelper.getAllFriends();
-        allFriends.add(FBHelper.getAppUser().profile);
-//        List<String> q = new LinkedList<>();
-//        q.add("526883024");
-//        q.add("629531241");
+//        final List<AppFriend> allFriends = FBHelper.getAllFriends();
+//        allFriends.add(FBHelper.getAppUser().profile);
+        List<String> q = new LinkedList<>();
 //        q.add("1140600495");
-        final GraphData graphdata = new GraphData(allFriends);
+        q.add("500454221");
+        q.add("10217893");
+//        final GraphData graphdata = new GraphData(allFriends);
+        final GraphData graphdata = getGraphData(q);
+        Logger.debug(graphdata.toString());
         return ok(graph.render(graphdata.getFriendNodes()));
     }
-
-
 }

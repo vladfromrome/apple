@@ -16,11 +16,12 @@ GET         /fblogout            controllers.FBController.logOut
 GET         /fbclean             controllers.FBController.cleanDB()
 GET         /status              controllers.Application.status()
 GET         /loadfriends         controllers.FBController.loadFriends()
-GET         /fbcommon            controllers.FBController.fbcommon()
+GET         /fbcommon            controllers.FBController.fbcommon(friends: String ?= "")
 GET         /fbtest              controllers.FBController.checkGraph()
 GET         /graph               controllers.FBController.graph()
 GET         /ajax                controllers.Application.ajax()
 GET         /testAjax            controllers.Application.testAjax()
+GET         /jsRoutes            controllers.FBController.jsRoutes()
 
 
 

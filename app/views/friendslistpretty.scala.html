@@ -1,15 +1,18 @@
-@(chosenFriend: AppFriend, friendslist: java.util.List[AppFriend])
+@(allCommonFriends: java.util.Map[AppFriend,java.util.List[AppFriend]])
+@import java.util.Map
 @import java.util.List
 
-    <div class="accordion-group">
+
+@for(set <- allCommonFriends.entrySet()){
+<div class="accordion-group">
         <div class="accordion-heading accordionize">
             <a class="secondary-toggle accordion-toggle " data-toggle="collapse" data-parent="#"
-            href="#@chosenFriend.user_id">
-                @chosenFriend.name
+            href="#@set.getKey.user_id">
+                @set.getKey.name
                 <span class="font-icon-arrow-simple-down"></span>
             </a>
         </div>
-        <div id="@chosenFriend.user_id" class="accordion-body collapse">
+        <div id="@set.getKey.user_id" class="accordion-body collapse">
             <div class="accordion-inner">
                 <table class="table table-bordered">
                     <thead>
@@ -21,7 +24,7 @@
                     </thead>
                     <tbody id="friends-data" >
 
-            @for(friend <- friendslist) {
+            @for(friend <- set.getValue) {
                 <tr>
                     <td>@friend.user_id</td>
                     <td><img src="@routes.ImageController.getImage(friend.picId())"  alt="This is a profile picture" /></td>
@@ -33,3 +36,4 @@
             </div>
         </div>
     </div>
+}

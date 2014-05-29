@@ -20,7 +20,6 @@ function fbFriends ( ) {
         success : function ( data, textStatus, jqXHR ) {
             $("#friends-data" ).html(data) ;
             showMutualFriends();
-            return;
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
@@ -29,9 +28,14 @@ function fbFriends ( ) {
 
 }
 
-function fbCommon ( ) {
-    $.ajax ( {
-        url : '/fbcommon',
+function fbCommon ( ){
+    var checkedCheckbox= $("input[type=checkbox]:checked");
+    var ids = "";
+    for (var i = 0; i < checkedCheckbox.length; i++) {
+        ids +=checkedCheckbox[i].value+",";
+    }
+    console.log(ids);
+    appRoutes.controllers.FBController.fbcommon(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
             $ ( "#toggleArea" ).html (data) ;
             showSeeGraph ( );
@@ -39,14 +43,14 @@ function fbCommon ( ) {
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
         }
-    } ) ;
+    });
 
 }
 
 function graph ( ) {
     $.ajax ( {
         url : '/graph',
-        success : function ( data, textStatus, jqXHR ) {
+            success : function ( data, textStatus, jqXHR ) {
             $ ( "body" ).append(data) ;
         },
         error : function ( jqXHR, textStatus, errorThrown ) {

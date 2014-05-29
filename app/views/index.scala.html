@@ -1,6 +1,8 @@
 @(message: String)
     @main("Welcome to Apple test app") {
-        <div class="alert alert-info fade in">
+    <script type="text/javascript" src='@routes.FBController.jsRoutes'></script>
+
+    <div class="alert alert-info fade in">
             App status: @(util.FBHelper.getAppStatus) <br>
         </div>
         @*<h4 >@Html(models.TestBar.getBars())</h4>*@
