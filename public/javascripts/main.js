@@ -2,8 +2,7 @@
  Show Functions
  ================================================== */
 function loadFriends ( ) {
-    $.ajax ( {
-        url : '/loadfriends',
+    appRoutes.controllers.FBController.loadFriends().ajax({
         success : function ( data, textStatus, jqXHR ) {
 //            $ ( "body" ).append( "<div>" + data + "</div>" ) ;
 
@@ -11,12 +10,11 @@ function loadFriends ( ) {
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
         }
-    } ) ;
-
+    });
 }
+
 function fbFriends ( ) {
-    $.ajax ( {
-        url : '/fbfriends',
+    appRoutes.controllers.FBController.getFriendsList().ajax({
         success : function ( data, textStatus, jqXHR ) {
             $("#friends-data" ).html(data) ;
             showMutualFriends();
@@ -24,7 +22,7 @@ function fbFriends ( ) {
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
         }
-    } ) ;
+    });
 
 }
 
@@ -34,7 +32,6 @@ function fbCommon ( ){
     for (var i = 0; i < checkedCheckbox.length; i++) {
         ids +=checkedCheckbox[i].value+",";
     }
-    console.log(ids);
     appRoutes.controllers.FBController.fbcommon(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
             $ ( "#toggleArea" ).html (data) ;

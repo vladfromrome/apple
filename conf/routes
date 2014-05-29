@@ -11,7 +11,7 @@ GET         /revroute            controllers.Application.revroute()
 GET         /fblogin             controllers.FBController.logIn
 GET         /fbcallback          controllers.FBController.loginCallback(code: String ?= "")
 GET         /fbpost              controllers.FBController.postMsg
-GET         /fbfriends           controllers.FBController.getFriendsList
+GET         /fbfriends           controllers.FBController.getFriendsList()
 GET         /fblogout            controllers.FBController.logOut
 GET         /fbclean             controllers.FBController.cleanDB()
 GET         /status              controllers.Application.status()

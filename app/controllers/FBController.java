@@ -45,7 +45,11 @@ public class FBController extends Controller {
 
     public static Result jsRoutes() {
         response().setContentType("text/javascript");
-        return ok(Routes.javascriptRouter("appRoutes", controllers.routes.javascript.FBController.fbcommon()));
+        return ok(Routes.javascriptRouter("appRoutes", controllers.routes.javascript.FBController.fbcommon(),
+                controllers.routes.javascript.FBController.loadFriends(),
+                controllers.routes.javascript.FBController.getFriendsList(),
+                controllers.routes.javascript.FBController.graph()
+        ));
     }
 
     public static Result logIn() {
@@ -154,10 +158,10 @@ public class FBController extends Controller {
     //for testing purposes
     public static Result fbcommon(String ids) {
         try {
-            System.out.println("DATA"+  ids);
+            System.out.println("DATA" + ids);
             String[] userIDs = ids.split(",");
             System.out.println("userIDs = " + Arrays.toString(userIDs));
-            Map<AppFriend,List<AppFriend>> allCommonFriends = new HashMap<>();
+            Map<AppFriend, List<AppFriend>> allCommonFriends = new HashMap<>();
             for (String userID : userIDs) {
                 AppFriend friend = AppFriend.FIND.where().eq("user_id", userID).eq("appUser", FBHelper.getAppUser()).findUnique();
                 System.out.println("friend = " + friend);
