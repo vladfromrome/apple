@@ -1,6 +1,7 @@
 @(graphnodes: java.util.List[GraphNode])
 @import java.util.List
 
+    <!-- END SIGMA IMPORTS -->
 
 <div id="container">
 
@@ -139,28 +140,3 @@ initSigma ( ) ;
 
 </script>
 
-    <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">User Info</h4>
-            </div>
-            <div class="modal-body">
-                <p>Name: <span id="modal-name"></span></p>
-                <p>Nickname: <span id="modal-nickname"></span></p>
-                <p>Gender: <span id="modal-gender"></span></p>
-                <p>Degree Centrality: <span id="modal-dc"></span></p>
-                <p>Normalized Degree Centrality: <span id="modal-dc_n"></span></p>
-                <p>Betweenness Centrality: <span id="modal-bc"></span></p>
-                <p>Normalized Betweennness Centrality: <span id="modal-bc_n"></span></p>
-                <p>Closeness Centrality: <span id="modal-cc"></span></p>
-                <p>Normalized CLoseness Centrality: <span id="modal-cc_n"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
