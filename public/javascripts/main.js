@@ -36,7 +36,6 @@ function fbCommon ( ){
         success : function ( data, textStatus, jqXHR ) {
             $ ("#toggleArea").html(data) ;
             showSeeGraph();
-
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
@@ -46,7 +45,12 @@ function fbCommon ( ){
 }
 
 function graph ( ) {
-    appRoutes.controllers.FBController.graph().ajax({
+    var checkedCheckbox= $("input[type=checkbox]:checked");
+    var ids = "";
+    for (var i = 0; i < checkedCheckbox.length; i++) {
+        ids +=checkedCheckbox[i].value+",";
+    }
+    appRoutes.controllers.FBController.graph(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
             $ ( "#graph" ).html(data) ;
             $ ( "#twoArea" ).collapse("hide") ;
@@ -63,8 +67,8 @@ $ ( document ).ajaxStart ( function ( ) {
     $(".modal" ).show();
 } ) ;
 $ ( document ).ajaxStop ( function ( ) {
-    $(".sticky-nav" ).show();
     $(".modal" ).hide();
+    $(".sticky-nav" ).show();
 } ) ;
 
 function getFriends(){

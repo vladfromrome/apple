@@ -31,7 +31,6 @@ public class FBController extends Controller {
     private static final String logInUrl = "/";
     //<editor-fold desc="Constants">
     private static final String logOutUrl = "/";
-    private static String[] selectedIDs;
     //</editor-fold>
 
     //<editor-fold desc="Results">
@@ -158,7 +157,7 @@ public class FBController extends Controller {
 
     public static Result fbcommon(String ids) {
         try {
-            selectedIDs = ids.split(",");
+            String[] selectedIDs = ids.split(",");
             System.out.println("userIDs = " + Arrays.toString(selectedIDs));
             Map<AppFriend, List<AppFriend>> allCommonFriends = new HashMap<>();
             for (String userID : selectedIDs) {
@@ -228,7 +227,7 @@ public class FBController extends Controller {
     }
     //</editor-fold>
 
-    public static Result graph() {
+    public static Result graph(String ids) {
 //        final List<AppFriend> allFriends = FBHelper.getAllFriends();
 //        allFriends.add(FBHelper.getAppUser().profile);
 //        List<String> q = new LinkedList<>();
@@ -236,6 +235,8 @@ public class FBController extends Controller {
 //        q.add("500454221");
 //        q.add("10217893");
 //        final GraphData graphdata = new GraphData(allFriends);
+
+        String[] selectedIDs = ids.split(",");
         final GraphData graphdata = getGraphData(FBHelper.getCommonFriendIDs(selectedIDs));
         Logger.debug(graphdata.toString());
         return ok(graph.render(graphdata.getFriendNodes()));
