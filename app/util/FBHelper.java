@@ -298,6 +298,9 @@ public class FBHelper {
                     commonFriendIDs.add(id);
                 }
             }
+            if(!commonFriendIDs.contains(selectedID)){
+                commonFriendIDs.add(selectedID);
+            }
         }
         return commonFriendIDs;
     }

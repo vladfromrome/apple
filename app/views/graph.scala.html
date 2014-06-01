@@ -39,24 +39,21 @@ edges :[ ]
 urls =[
 ],
 colors =[
-'#000000',
-'#668f3c',
-'#c6583e',
-'#b956af'
+'#34495e'
 ] ;
 i = 0 ;
     @for(node <- graphnodes) {
         var id = '  @routes.ImageController.getImage(node.getPictureId) ';
         var node = {
         id : '  @node.getUser_id ',
-        label : '  @node.getName ',
+        name : '  @node.getName ',
         // note the ShapeLibrary.enumerate() returns the names of all
         // supported renderers
         type : 'square',
         x : Math.random ( ),
         y : Math.random ( ),
         size : 10,
-        color : colors[ Math.floor ( Math.random ( ) * colors.length ) ],
+        color : '#34495e',
         nickname : ' @node.getNickname ',
         gender : ' @node.getGender ',
         bc : ' @node.getBc ',
@@ -64,9 +61,11 @@ i = 0 ;
         dc : ' @node.getDc ',
         bc_n : ' @node.getBc_n ',
         cc_n : ' @node.getCc_n ',
-        dc_n : ' @node.getDc_n '
+        dc_n : ' @node.getDc_n ',
+
         //    borderColor: colors[Math.floor(Math.random()* colors.length)]
         } ;
+
 
         node.image = {
         url : '  @routes.ImageController.getImage(node.getPictureId) ',
@@ -90,7 +89,8 @@ i = 0 ;
             id : 'e' + i,
             source : '  @node.getUser_id ',
             target : '  @e ',
-            size : Math.random ( )
+            size : Math.random ( ),
+            color: '#34495e'
             } ) ;
             i ++ ;
         }
@@ -105,7 +105,9 @@ renderer : {
 // This works only with the canvas renderer, so the
 // renderer type set as "canvas" is necessary here.
 container : document.getElementById ( 'graph-container' ),
-type : 'canvas'
+type : 'canvas',
+    nodeHoverColor:'#1abc9c',
+    borderSize:5
 },
 settings : {
 minNodeSize : 8,
@@ -116,8 +118,8 @@ CustomShapes.init ( s ) ;
 s.refresh ( ) ;
 
 function fillModal ( e ) {
-console.log ( "filling:" + e.data.node.label ) ;
-$ ( "#modal-name" ).text ( e.data.node.label ) ;
+console.log ( "filling:" + e.data.node.name ) ;
+$ ( "#modal-name" ).text ( e.data.node.name ) ;
 $ ( "#modal-nickname" ).text ( e.data.node.nickname ) ;
 $ ( "#modal-gender" ).text ( e.data.node.gender ) ;
 $ ( "#modal-bc" ).text ( e.data.node.bc ) ;
@@ -131,6 +133,11 @@ s.bind ( 'clickNode', function ( e ) {
     fillModal ( e ) ;
     $ ( '#myModal' ).modal ( 'toggle' ) ;
     console.log ( e.type ) ;
+} );
+
+s.bind ( 'overNode', function ( e ) {
+e.data.node.edgeColor = '#1abc9c'
+console.log ( e.type ) ;
 } );
 
 }
