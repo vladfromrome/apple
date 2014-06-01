@@ -236,8 +236,10 @@ public class FBController extends Controller {
 //        q.add("500454221");
 //        q.add("10217893");
 //        final GraphData graphdata = new GraphData(allFriends);
-        final GraphData graphdata = getGraphData(Arrays.asList(selectedIDs));
+        final GraphData graphdata = getGraphData(FBHelper.getCommonFriendIDs(selectedIDs));
         Logger.debug(graphdata.toString());
         return ok(graph.render(graphdata.getFriendNodes()));
     }
+
+
 }

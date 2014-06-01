@@ -12,6 +12,7 @@ import play.mvc.Http.Context;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -279,12 +280,26 @@ public class FBHelper {
     }
 
     public static List<AppFriend> getFriendsfromFbIds(List<String> ids){
-        List<AppFriend> flist = new ArrayList<AppFriend>();
+        List<AppFriend> flist = new ArrayList<>();
         for (String fb_user_id: ids){
             flist.add(AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique());
         }
         Collections.sort(flist);
         return flist;
+    }
+
+    public static List<String> getCommonFriendIDs(String[] selectedIDs) {
+        List<String> commonFriendIDs = new LinkedList<>();
+        for (String selectedID : selectedIDs) {
+            List<AppFriend> commonFriends = getCommonFriendsWith(selectedID);
+            for (AppFriend commonFriend : commonFriends) {
+                String id = String.valueOf(commonFriend.user_id);
+                if(!commonFriendIDs.contains(id)){
+                    commonFriendIDs.add(id);
+                }
+            }
+        }
+        return commonFriendIDs;
     }
     //</editor-fold>
 

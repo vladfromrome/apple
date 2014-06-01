@@ -59,9 +59,11 @@ function graph ( ) {
 }
 
 $ ( document ).ajaxStart ( function ( ) {
+    $(".sticky-nav" ).hide();
     $(".modal" ).show();
 } ) ;
 $ ( document ).ajaxStop ( function ( ) {
+    $(".sticky-nav" ).show();
     $(".modal" ).hide();
 } ) ;
 
