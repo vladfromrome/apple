@@ -3,6 +3,7 @@
 @import java.util.List
 
 
+
 @for(set <- allCommonFriends.entrySet()){
 <div class="accordion-group">
         <div class="accordion-heading accordionize">
@@ -14,6 +15,8 @@
         </div>
         <div id="@set.getKey.user_id" class="accordion-body collapse">
             <div class="accordion-inner">
+            @if(!set.getValue.isEmpty){
+
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -23,7 +26,6 @@
                         </tr>
                     </thead>
                     <tbody id="friends-data" >
-
             @for(friend <- set.getValue) {
                 <tr>
                     <td>@friend.user_id</td>
@@ -31,8 +33,14 @@
                     <td>@friend.name</td>
                 </tr>
             }
+
                     </tbody>
                 </table>
+            } else{
+                <div class="alert alert-standard fade in">
+                    You have no common friends.
+                </div>
+            }
             </div>
         </div>
     </div>

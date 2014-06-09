@@ -3,7 +3,7 @@
     @for(friend <- friendslist) {
         <tr>
             <td>
-                <input name="@friend.name" value="@friend.user_id" type="checkbox">
+                <input name="friendlist" value="@friend.user_id" type="checkbox">
             </td>
             <td>@friend.user_id</td>
             <td><img src="@routes.ImageController.getImage(friend.picId())"  alt="This is a profile picture" /></td>

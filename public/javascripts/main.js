@@ -1,6 +1,8 @@
 /* ==================================================
  Show Functions
  ================================================== */
+
+
 function loadFriends ( ) {
     appRoutes.controllers.FBController.loadFriends().ajax({
         success : function ( data, textStatus, jqXHR ) {
@@ -8,7 +10,7 @@ function loadFriends ( ) {
 
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
-            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+            $ ( "#friends-data" ).html ( "<div class='alert alert-error fade in'>"+textStatus+"</div>" ) ;
         }
     });
 }
@@ -21,7 +23,7 @@ function fbFriends ( ) {
             showMutualFriends();
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
-            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+            $ ( "#friends-data" ).html ( "<div class='alert alert-error fade in'>"+textStatus+"</div>" ) ;
         }
     });
 
@@ -29,7 +31,7 @@ function fbFriends ( ) {
 
 function fbCommon ( ){
 //    showSeeGraph();
-    var checkedCheckbox= $("input[type=checkbox]:checked");
+    var checkedCheckbox= $("input[name='friendlist']:checked");
     var ids = "";
     for (var i = 0; i < checkedCheckbox.length; i++) {
         ids +=checkedCheckbox[i].value+",";
@@ -40,14 +42,14 @@ function fbCommon ( ){
             showSeeGraph();
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
-            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+            $ ( "#fb-common" ).html( "<div class='alert alert-error fade in'>"+textStatus+"</div>" ) ;
         }
     });
 
 }
 
 function graph ( ) {
-    var checkedCheckbox= $("input[type=checkbox]:checked");
+    var checkedCheckbox= $("input[name='friendlist']:checked");
     var ids = "";
     for (var i = 0; i < checkedCheckbox.length; i++) {
         ids +=checkedCheckbox[i].value+",";
@@ -57,7 +59,7 @@ function graph ( ) {
             $ ( "#graph" ).html(data) ;
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
-            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+//            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
         }
     });
 }
@@ -562,4 +564,16 @@ jQuery(function ($) {
         BRUSHED.mobileNav();
     });
 
+});
+
+$('#selectAll').click(function(event) {  //on click
+    if(this.checked) { // check select status
+        $("input[name='friendlist']").each(function() { //loop through each checkbox
+            this.checked = true;  //select all checkboxes with class "checkbox1"
+        });
+    }else{
+        $("input[name='friendlist']").each(function() { //loop through each checkbox
+            this.checked = false; //deselect all checkboxes with class "checkbox1"
+        });
+    }
 });
