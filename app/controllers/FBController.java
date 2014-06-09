@@ -144,7 +144,7 @@ public class FBController extends Controller {
 
     //for testing purposes
     public static Result postMsg() {
-        String message = "Bazinga! fb api test.";
+        final String message = "Bazinga! fb api test.";
         Facebook facebook = FBHelper.getFBInstance();
         try {
             facebook.postStatusMessage(message);

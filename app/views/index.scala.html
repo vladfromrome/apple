@@ -44,10 +44,10 @@
                             href="#oneArea" onclick="getFriends ( ) ;">Get Friends</a>
 
                         </li>
-                        <li id="get-mutual-friends-li" class="hidden"><a class="external" data-toggle="collapse" data-parent="#accordionArea"
+                        <li class="get-mutual-friends-li hidden"><a class="external" data-toggle="collapse" data-parent="#accordionArea"
                         href="#twoArea" onclick="getMutualFriends ( ) ;">
                             Get Mutual Friends</a></li>
-                        <li id="see-graph-li" class="hidden"><a class="external" data-toggle="collapse" data-parent="#accordionArea"
+                        <li class="see-graph-li hidden"><a class="external" data-toggle="collapse" data-parent="#accordionArea"
                         href="#threeArea" onclick="graph();" >See Graph</a></li>
                         <li><a href="http://localhost:9000/fblogout" class="external">Log Out</a></li>
                     </ul>
@@ -77,11 +77,11 @@
                         <div>
                             <div class="span3">
                                 <div class="image-wrap">
-                                    <div class="hover-wrap">
-                                        <span class="overlay-img"></span>
-                                        <span class="overlay-text-thumb">CTO/Founder</span>
-                                    </div>
                                     @if(util.FBHelper.userLogged()) {
+                                        <div class="hover-wrap">
+                                            <span class="overlay-img"></span>
+                                            <span class="overlay-text-thumb">@util.FBHelper.getAppUser.profile.name</span>
+                                        </div>
                                         <img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getBigPicId)" alt="This is an image" />
                                     } else {
                                         <img src="@routes.Assets.at("images/work/thumbs/image-01.jpg")" alt="John Doe">
@@ -149,7 +149,7 @@
                         </div>
                     </div>
 
-                    <div id="get-mutual-friends" class="accordion-group hidden">
+                    <div id="get-mutual-friends" class="accordion-group">
                         <div class="accordion-heading accordionize">
                             <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordionArea"
                             href="#twoArea" onclick="getMutualFriends ( ) ;">
@@ -158,23 +158,26 @@
                         </div>
                         <div id="twoArea" class="accordion-body collapse">
                             <div class="accordion-inner">
-                                <div class="accordion" id="toggleArea">
+                                <div id="fb-common">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="see-graph" class="accordion-group hidden">
+                    <div id="see-graph" class="accordion-group">
 
                         <div class="accordion-heading accordionize">
                             <a class="accordion-toggle text-center" data-toggle="collapse" data-parent="#accordionArea"
-                            onclick="graph();">
+                            href="#threeArea" onclick="graph();">
                                 See Graph
                             </a>
                         </div>
 
                         <div id="threeArea" class="accordion-body collapse">
-                            <div id="graph" class="accordion-inner">
+                            <div class="accordion-inner" >
+                                <div id="graph">
+
+                                </div>
 
                             </div>
                         </div>
@@ -299,7 +302,7 @@
         </style>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal hide" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
