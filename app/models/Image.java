@@ -6,6 +6,7 @@ import play.db.ebean.Model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Table;
 import java.io.*;
 import java.net.*;
 
@@ -15,6 +16,7 @@ import java.net.*;
  * Time: 9:17
  */
 @Entity
+@Table(name = "images")
 public class Image extends Model {
     @Id
     public Long id;

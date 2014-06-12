@@ -224,7 +224,9 @@ public class FBHelper {
     //Bool Get User
     public static boolean userLogged(){
         try {
-            getAppUser();
+            AppUser u = getAppUser();
+            String s = u.profile.name;
+           // Logger.debug("Current user is "+u.profile.name);
             return true;
         } catch (Exception e) {
             Logger.debug("User not logged in.");
