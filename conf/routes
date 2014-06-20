@@ -10,7 +10,6 @@ GET         /fbcallback          controllers.Application.loginCallback(code: Str
 GET         /fbpost              controllers.Application.postMsg
 GET         /fbfriends           controllers.Application.getFriendsList()
 GET         /fblogout            controllers.Application.logOut
-GET         /fbclean             controllers.Application.cleanDB()
 GET         /status              controllers.Application.status()
 GET         /loadfriends         controllers.Application.loadFriends()
 GET         /fbcommon            controllers.Application.fbcommon(friends: String ?= "")

@@ -25,6 +25,14 @@ import java.util.*;
  * Time: 8:51
  */
 public class Application extends Controller {
+
+    //<editor-fold desc="Constants">
+    private static final String logOutUrl = "/";
+    private static final String logInUrl = "/";
+    //</editor-fold>
+
+    //<editor-fold desc="Results">
+
     public static Result index() {
         return ok(views.html.index.render("Your new application is ready."));
     }
@@ -33,15 +41,6 @@ public class Application extends Controller {
         return ok(views.html.status.render());
     }
 
-    //    private static final String logOutUrl = "/status";
-//    private static final String logInUrl = "/status";
-    private static final String logInUrl = "/";
-    //<editor-fold desc="Constants">
-    private static final String logOutUrl = "/";
-    //</editor-fold>
-
-    //<editor-fold desc="Results">
-    //development in progress
     public static Result jsRoutes() {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("appRoutes", routes.javascript.Application.fbcommon(),

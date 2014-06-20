@@ -4,7 +4,7 @@
 
 
 function loadFriends ( ) {
-    appRoutes.controllers.FBController.loadFriends().ajax({
+    appRoutes.controllers.Application.loadFriends().ajax({
         success : function ( data, textStatus, jqXHR ) {
 //            $ ( "body" ).append( "<div>" + data + "</div>" ) ;
 
@@ -17,7 +17,7 @@ function loadFriends ( ) {
 
 function fbFriends ( ) {
 //    showMutualFriends();
-    appRoutes.controllers.FBController.getFriendsList().ajax({
+    appRoutes.controllers.Application.getFriendsList().ajax({
         success : function ( data, textStatus, jqXHR ) {
             $("#friends-data" ).html(data) ;
             showMutualFriends();
@@ -36,7 +36,7 @@ function fbCommon ( ){
     for (var i = 0; i < checkedCheckbox.length; i++) {
         ids +=checkedCheckbox[i].value+",";
     }
-    appRoutes.controllers.FBController.fbcommon(ids).ajax({
+    appRoutes.controllers.Application.fbcommon(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
             $ ("#fb-common").html(data) ;
             showSeeGraph();
@@ -54,7 +54,7 @@ function graph ( ) {
     for (var i = 0; i < checkedCheckbox.length; i++) {
         ids +=checkedCheckbox[i].value+",";
     }
-    appRoutes.controllers.FBController.graph(ids).ajax({
+    appRoutes.controllers.Application.graph(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
             $ ( "#graph" ).html(data) ;
         },
