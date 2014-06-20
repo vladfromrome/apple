@@ -42,14 +42,6 @@ public class Application extends Controller {
 
     //<editor-fold desc="Results">
     //development in progress
-    public static Result cleanDB() {
-        //Ebean.delete(AppFriend.FIND.where().eq("appUser",FBHelper.getAppUser()).findList());
-//        Ebean.delete(AppUser.FIND.all());
-//        Ebean.delete(AppFriend.FIND.all());
-        FBHelper.deleteFriends(FBHelper.getAppUser());
-        return ok("DB is clean.");
-    }
-
     public static Result jsRoutes() {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("appRoutes", routes.javascript.Application.fbcommon(),
@@ -131,10 +123,21 @@ public class Application extends Controller {
         return graphData;
     }
 
-    /*public static List<AppFriend> getCommonFriendsWith(List<String> friendIds){
+    public static Result graph(String ids) {
+//        final List<AppFriend> allFriends = FBHelper.getAllFriends();
+//        allFriends.add(FBHelper.getAppUser().profile);
+//        List<String> q = new LinkedList<>();
+//        q.add("1140600495");
+//        q.add("500454221");
+//        q.add("10217893");
+//        final GraphData graphdata = new GraphData(allFriends);
 
-
-    }*/
+        String[] selectedIDs = ids.split(",");
+        // final GraphData graphdata = getGraphData(FBHelper.getCommonFriendIDs(selectedIDs));
+        final GraphData graphdata = getGraphData(Arrays.asList(selectedIDs));
+        Logger.debug(graphdata.toString());
+        return ok(graph.render(graphdata.getFriendNodes()));
+    }
     //</editor-fold>
 
     //<editor-fold desc="Test&Debug">
@@ -234,21 +237,7 @@ public class Application extends Controller {
     }
     //</editor-fold>
 
-    public static Result graph(String ids) {
-//        final List<AppFriend> allFriends = FBHelper.getAllFriends();
-//        allFriends.add(FBHelper.getAppUser().profile);
-//        List<String> q = new LinkedList<>();
-//        q.add("1140600495");
-//        q.add("500454221");
-//        q.add("10217893");
-//        final GraphData graphdata = new GraphData(allFriends);
 
-        String[] selectedIDs = ids.split(",");
-       // final GraphData graphdata = getGraphData(FBHelper.getCommonFriendIDs(selectedIDs));
-        final GraphData graphdata = getGraphData(Arrays.asList(selectedIDs));
-        Logger.debug(graphdata.toString());
-        return ok(graph.render(graphdata.getFriendNodes()));
-    }
 
 
 }

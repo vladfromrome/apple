@@ -180,34 +180,6 @@ public class FBHelper {
         }*/
     }
 
-    /**
-     * Deletes all friends and connections for the app user specified
-     * @param user
-     */
-    //todo raw sql. execute(SqlUpdate sqlUpdate)
-    public static void deleteFriends(AppUser user) {
-        List<AppFriend> appUserFriends = user.profile.friends;
-        Logger.debug("Deleting friends connections. " + appUserFriends.toString() + " size: " + appUserFriends.size());
-        for (AppFriend auf : appUserFriends) {
-            List<AppFriend> cf = getCommonFriendsWith(auf.user_id);
-
-            Logger.debug("removing  connections of " + auf.toString() + ". the first is " + cf.get(0).name);
-            //Logger.debug(auf.toString());
-            auf = AppFriend.FIND.where().eq("id", auf.id).findUnique();
-            //auf.friends.clear();
-            Ebean.delete(auf.friends);
-            auf.friends = null;
-            //auf=new AppFriend(user,auf.user_id,auf.name,auf.nickname,auf.gender,auf.link);
-            auf.update();
-        }
-        user = getAppUser();
-        Logger.debug("Deleting friends ");
-
-        for (AppFriend auf : user.profile.friends) {
-            Logger.debug("deleting " + auf.toString());
-            auf.delete();
-        }
-    }
     //</editor-fold>
 
 
