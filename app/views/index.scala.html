@@ -1,9 +1,9 @@
 @(message: String)
     @main("Welcome to Apple test app") {
-    <script type="text/javascript" src='@routes.FBController.jsRoutes'></script>
+    <script type="text/javascript" src='@routes.Application.jsRoutes'></script>
 
     <div class="alert alert-info fade in">
-            App status: @(util.FBHelper.getAppStatus) <br>
+            App status: @(utilities.FBHelper.getAppStatus) <br>
         </div>
         @*<h4 >@Html(models.TestBar.getBars())</h4>*@
         @*<form action="@routes.Application.addBar()" method="post">*@
@@ -18,7 +18,7 @@
 
         <!-- Homepage Slider -->
 
-        @if(!util.FBHelper.userLogged()) {
+        @if(!utilities.FBHelper.userLogged()) {
             <div id="home" class="container">
             <div id="log-in" class="text-center" style="height : auto ; width : auto">
                 <a class="button button-large" href="http://localhost:9000/fblogin">Log In</a>
@@ -77,25 +77,25 @@
                         <div>
                             <div class="span3">
                                 <div class="image-wrap">
-                                    @if(util.FBHelper.userLogged()) {
+                                    @if(utilities.FBHelper.userLogged()) {
 
                                         <div class="hover-wrap">
                                             <span class="overlay-img"></span>
-                                            <span class="overlay-text-thumb">@util.FBHelper.getAppUser.profile.name</span>
+                                            <span class="overlay-text-thumb">@utilities.FBHelper.getAppUser.profile.name</span>
                                         </div>
-                                        <img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getBigPicId)" alt="This is an image" />
+                                        <img src="@routes.ImageController.getImage(utilities.FBHelper.getAppUser.getBigPicId)" alt="This is an image" />
                                     } else {
                                         <img src="@routes.Assets.at("images/work/thumbs/image-01.jpg")" alt="John Doe">
                                         }
                                 </div>
                             </div>
                             <div class="span8">
-                                @if(util.FBHelper.userLogged()) {
-                                    <h3 class="profile-name">@util.FBHelper.getAppUser.profile.name</h3>
+                                @if(utilities.FBHelper.userLogged()) {
+                                    <h3 class="profile-name">@utilities.FBHelper.getAppUser.profile.name</h3>
                                     <p class="profile-description">
-                                        Nickname: <span>@util.FBHelper.getAppUser.profile.nickname</span><br>
-                                        Gender: <span>@util.FBHelper.getAppUser.profile.gender</span>    <br>
-                                        Link: <span><a href="@util.FBHelper.getAppUser.profile.link">@util.FBHelper.getAppUser.profile.link</a></span><br>
+                                        Nickname: <span>@utilities.FBHelper.getAppUser.profile.nickname</span><br>
+                                        Gender: <span>@utilities.FBHelper.getAppUser.profile.gender</span>    <br>
+                                        Link: <span><a href="@utilities.FBHelper.getAppUser.profile.link">@utilities.FBHelper.getAppUser.profile.link</a></span><br>
 
                                     </p>
                                         <!---->

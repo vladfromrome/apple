@@ -1,6 +1,6 @@
 @()
 
-App status: @(util.FBHelper.getAppStatus) <br>
+App status: @(utilities.FBHelper.getAppStatus) <br>
 <a href="http://localhost:9000/fblogin">login</a> <br>
 <button onclick="loadFriends();">persist friends profiles and connections into DB</button> <br>
 <button onclick="fbFriends();">view list of friends</button> <br>
@@ -17,9 +17,9 @@ App status: @(util.FBHelper.getAppStatus) <br>
 
 
 <br>
-@if(util.FBHelper.userLogged()){
+@if(utilities.FBHelper.userLogged()){
     Profile picture<br>
-<img src="@routes.ImageController.getImage(util.FBHelper.getAppUser.getPictureId)"  alt="This is an image" />  <br>
+<img src="@routes.ImageController.getImage(utilities.FBHelper.getAppUser.getPictureId)"  alt="This is an image" />  <br>
     }
 <script src="@routes.Assets.at("javascripts/jquery-1.11.0.min.js")"></script>
 

@@ -1,4 +1,4 @@
-package util;
+package utilities;
 
 import com.avaje.ebean.Ebean;
 import facebook4j.*;

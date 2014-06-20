@@ -4,25 +4,20 @@
 
 # Home page
 GET         /                    controllers.Application.index()
-GET         /revroute            controllers.Application.revroute()
-
-
 # Facebook interaction
-GET         /fblogin             controllers.FBController.logIn
-GET         /fbcallback          controllers.FBController.loginCallback(code: String ?= "")
-GET         /fbpost              controllers.FBController.postMsg
-GET         /fbfriends           controllers.FBController.getFriendsList()
-GET         /fblogout            controllers.FBController.logOut
-GET         /fbclean             controllers.FBController.cleanDB()
+GET         /fblogin             controllers.Application.logIn
+GET         /fbcallback          controllers.Application.loginCallback(code: String ?= "")
+GET         /fbpost              controllers.Application.postMsg
+GET         /fbfriends           controllers.Application.getFriendsList()
+GET         /fblogout            controllers.Application.logOut
+GET         /fbclean             controllers.Application.cleanDB()
 GET         /status              controllers.Application.status()
-GET         /loadfriends         controllers.FBController.loadFriends()
-GET         /fbcommon            controllers.FBController.fbcommon(friends: String ?= "")
-GET         /fbtest              controllers.FBController.checkGraph()
-GET         /graph               controllers.FBController.graph(friends: String ?= "")
-GET         /ajax                controllers.Application.ajax()
-GET         /testAjax            controllers.Application.testAjax()
-GET         /jsRoutes            controllers.FBController.jsRoutes()
-GET         /fbcommontest        controllers.FBController.fbcommontest
+GET         /loadfriends         controllers.Application.loadFriends()
+GET         /fbcommon            controllers.Application.fbcommon(friends: String ?= "")
+GET         /fbtest              controllers.Application.checkGraph()
+GET         /graph               controllers.Application.graph(friends: String ?= "")
+GET         /jsRoutes            controllers.Application.jsRoutes()
+GET         /fbcommontest        controllers.Application.fbcommontest
 
 
 
