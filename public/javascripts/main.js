@@ -4,10 +4,10 @@
 
 
 function loadFriends ( ) {
-    appRoutes.controllers.Application.loadFriends().ajax({
+    appRoutes.controllers.Application.getFriends().ajax({
         success : function ( data, textStatus, jqXHR ) {
-//            $ ( "body" ).append( "<div>" + data + "</div>" ) ;
-
+            $("#friends-data" ).html(data) ;
+            showMutualFriends();
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
             $ ( "#friends-data" ).html ( "<div class='alert alert-error fade in'>"+textStatus+"</div>" ) ;
@@ -75,7 +75,7 @@ $ ( document ).ajaxStop ( function ( ) {
 
 function getFriends(){
     loadFriends();
-    fbFriends();
+    //fbFriends();
 }
 
 function getMutualFriends(){

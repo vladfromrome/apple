@@ -2,7 +2,7 @@
 
 App status: @(utilities.FBHelper.getAppStatus) <br>
 <a href="http://localhost:9000/fblogin">login</a> <br>
-<button onclick="loadFriends();">persist friends profiles and connections into DB</button> <br>
+<button onclick="getFriends();">persist friends profiles and connections into DB</button> <br>
 <button onclick="fbFriends();">view list of friends</button> <br>
 <button onclick="fbCommon();">View common friends with user 1148117708</button> <br>
 <button onclick="graph();">Show Graph</button> <br>
@@ -56,7 +56,7 @@ display : block ;
 </style>
 
 <script type="text/javascript">
-function loadFriends ( ) {
+function getFriends ( ) {
 $.ajax ( {
 url : '/loadfriends',
 success : function ( data, textStatus, jqXHR ) {

@@ -44,7 +44,7 @@ public class Application extends Controller {
     public static Result jsRoutes() {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("appRoutes", routes.javascript.Application.fbcommon(),
-                routes.javascript.Application.loadFriends(),
+                routes.javascript.Application.getFriends(),
                 routes.javascript.Application.getFriendsList(),
                 routes.javascript.Application.graph()
         ));
@@ -81,11 +81,11 @@ public class Application extends Controller {
         return redirect(logOutUrl);
     }
 
-    public static Result loadFriends() {
+    public static Result getFriends() {
         try {
             Logger.info("Loading friends of " + FBHelper.getAppUserName());
             FBHelper.loadFriends();
-            return ok("friends are loaded successfully");
+            return ok(views.html.friendslist.render(FBHelper.getAllFriends()));
         } catch (Exception e) {
             e.printStackTrace();
             return ok(e.toString());

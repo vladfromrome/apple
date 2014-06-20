@@ -11,7 +11,7 @@ GET         /fbpost              controllers.Application.postMsg
 GET         /fbfriends           controllers.Application.getFriendsList()
 GET         /fblogout            controllers.Application.logOut
 GET         /status              controllers.Application.status()
-GET         /loadfriends         controllers.Application.loadFriends()
+GET         /getfriends          controllers.Application.getFriends()
 GET         /fbcommon            controllers.Application.fbcommon(friends: String ?= "")
 GET         /fbtest              controllers.Application.checkGraph()
 GET         /graph               controllers.Application.graph(friends: String ?= "")

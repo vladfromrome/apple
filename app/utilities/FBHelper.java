@@ -135,9 +135,8 @@ public class FBHelper {
      *
      * @throws FacebookException
      */
-    //TODO Optimize fetching. Fetch in one api call and one ebean transaction.
     public static void loadFriends() throws FacebookException {
-        if (getAppUser().friendEntities.size() > 0) {    //todo. add upd or deleteFriends(getAppUser());
+        if (getAppUser().friendEntities.size() > 0) {
             return;
         }
 
@@ -164,8 +163,7 @@ public class FBHelper {
         //for each user's friend:
         //add:user and mutual friends
         List<AppFriend> appUserFriends = appUser.profile.friends;
-        /*Ebean.beginTransaction();
-        try {*/
+
         for (AppFriend af : appUserFriends) {
             af.friends.add(appUser.profile);
             ResponseList<Friend> mutualFs = fb.getMutualFriends(af.user_id);
@@ -175,9 +173,7 @@ public class FBHelper {
             Logger.debug("Persisting friend: " + af.toString());
             af.save();
         }
-        /*} finally {
-            Ebean.endTransaction();
-        }*/
+
     }
 
     //</editor-fold>
