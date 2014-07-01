@@ -5,12 +5,14 @@
 
 $ ( document ).ajaxStart ( function ( ) {
     $(".sticky-nav" ).hide();
+    $("footer.p").hide();
     $(".modal-loader" ).show();
 } ) ;
 
 $ ( document ).ajaxStop ( function ( ) {
     $(".modal-loader" ).hide();
     $(".sticky-nav" ).show();
+    $("footer.p").show();
 } ) ;
 
 function loadFriends ( ) {
@@ -38,12 +40,17 @@ function fbFriends ( ) {
 
 }
 
-function fbCommon ( ){
-    var checkedCheckbox= $("input[name='friendlist']:checked");
+function getSelectedFriends() {
+    var checkedCheckbox = $("input[name='friendlist']:checked");
     var ids = "";
     for (var i = 0; i < checkedCheckbox.length; i++) {
-        ids +=checkedCheckbox[i].value+",";
+        ids += checkedCheckbox[i].value + ",";
     }
+    return ids;
+}
+
+function fbCommon ( ){
+    var ids = getSelectedFriends();
     appRoutes.controllers.Application.fbcommon(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
             $ ("#fb-common").html(data) ;
@@ -57,11 +64,7 @@ function fbCommon ( ){
 }
 
 function graph ( ) {
-    var checkedCheckbox= $("input[name='friendlist']:checked");
-    var ids = "";
-    for (var i = 0; i < checkedCheckbox.length; i++) {
-        ids +=checkedCheckbox[i].value+",";
-    }
+    var ids = getSelectedFriends();
     appRoutes.controllers.Application.graph(ids).ajax({
         success : function ( data, textStatus, jqXHR ) {
             $ ( "#graph" ).html(data) ;

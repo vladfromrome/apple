@@ -171,7 +171,7 @@ public class Application extends Controller {
 
            return ok(friendslistpretty.render(allCommonFriends));
         } catch (Exception e) {
-            return ok("<div class='alert alert-error fade in'>No common friends </div>");
+            return ok("<div class='alert alert-error fade in'> No common friends </div>");
         }
     }
 
