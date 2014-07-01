@@ -5,18 +5,14 @@
     <div class="alert alert-info fade in">
             App status: @(utilities.FBHelper.getAppStatus) <br>
         </div>
-        @*<h4 >@Html(models.TestBar.getBars())</h4>*@
-        @*<form action="@routes.Application.addBar()" method="post">*@
-        @*<input name="name">*@
-        @*<input type="submit">*@
-        @*</form>*@
-        <!-- This section is for Splash Screen -->
+
+    <!-- This section is for Splash Screen -->
         <section id="jSplash">
             <div id="circle"></div>
         </section>
         <!-- End of Splash Screen -->
 
-        <!-- Homepage Slider -->
+        <!-- Homepage Land -->
 
         @if(!utilities.FBHelper.userLogged()) {
             <div id="home" class="container">
@@ -26,7 +22,7 @@
             </div>
         }
 
-        <!-- End Homepage Slider -->
+        <!-- End Homepage Land -->
 
         <!-- Header -->
         <header>
@@ -57,7 +53,7 @@
         </header>
         <!-- End Header -->
 
-        <!-- Our Work Section -->
+        <!-- Main Section -->
         <div id="about" class="page">
             <div class="container">
 
@@ -190,7 +186,7 @@
             <div class="modal modal-loader"><!-- Place at bottom of page --></div>
 
         </div>
-        <!-- End Our Work Section -->
+        <!-- End Main Section -->
 
 
         <!-- Footer -->
@@ -212,8 +208,6 @@
         <!-- jQuery Core -->
         <script src="@routes.Assets.at("javascripts/bootstrap.min.js")"></script>
         <!-- Bootstrap -->
-        @*<script src="@routes.Assets.at("javascripts/supersized.3.2.7.min.js")"></script>*@
-        <!-- Slider -->
         <script src="@routes.Assets.at("javascripts/waypoints.js")"></script>
         <!-- WayPoints -->
         <script src="@routes.Assets.at("javascripts/waypoints-sticky.js")"></script>
@@ -228,6 +222,7 @@
         <!-- Tweet -->
         <script src="@routes.Assets.at("javascripts/plugins.js")"></script>
         <!-- Contains: jPreloader, jQuery Easing, jQuery ScrollTo, jQuery One Page Navi -->
+
     <!-- START SIGMA IMPORTS -->
     <script src="@routes.Assets.at("javascripts/sigma.js/src/sigma.core.js")"></script>
     <script src="@routes.Assets.at("javascripts/sigma.js/src/conrad.js")"></script>
@@ -263,43 +258,12 @@
     <script src="@routes.Assets.at("javascripts/sigma.js/src/misc/sigma.misc.drawHovers.js")"></script>
     <script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/shape-library.js")"></script>
     <script src="@routes.Assets.at("javascripts/sigma.js/plugins/sigma.renderers.customShapes/sigma.renderers.customShapes.js")"></script>
-
+    <!--END SIGMA IMPORT -->
 
     <script src="@routes.Assets.at("javascripts/main.js")"></script>
-        <!-- Default JS -->
+    <!-- Default JS -->
 
-        <!-- End Js -->
-
-        <style type="text/css">
-
-        .modal-loader {
-        display : none ;
-        position : fixed ;
-        z-index : 1000 ;
-        top : 0 ;
-        left : 0 ;
-        height : 100% ;
-        width : 100% !important ; ;
-        background : rgba( 0, 0,0,.8 ) url( 'http://i.stack.imgur.com/tQTRW.gif' ) 50% 50%
-        no-repeat ;
-            margin: 0 !important;
-        }
-
-        /* When the body has the loading class, we turn
-           the scrollbar off with overflow:hidden */
-        body.loading {
-        overflow : hidden ;
-        }
-
-        /* Anytime the body has the loading class, our
-           modal element will be visible */
-        body.loading.modal-loader {
-        display : block ;
-        }
-            .modal-dialog h4,.modal-dialog p{
-                margin: 0;
-            }
-        </style>
+    <!-- End Js -->
 
     <!-- Modal -->
     <div class="modal hide" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -326,6 +290,6 @@
         </div>
     </div>
     </div>
-
+    <!-- End Modal -->
 
     }

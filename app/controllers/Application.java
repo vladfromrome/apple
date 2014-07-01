@@ -197,7 +197,7 @@ public class Application extends Controller {
             //return ok(views.html.friendslist.render(FBHelper.getCommonFriendsWith("1148117708")));
             return ok(views.html.friendslist.render(FBHelper.getCommonFriendsWith("1140600495")));
         } catch (Exception e) {
-            return ok("<div class='alert alert-error fade in'> No common friends or error:"+e.getMessage()+"</div>");
+            return ok("<div class='alert alert-error fade in'> No common friends </div>");
         }
     }
 

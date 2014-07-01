@@ -1,7 +1,17 @@
+
 /* ==================================================
- Show Functions
+ Ajax Functions
  ================================================== */
 
+$ ( document ).ajaxStart ( function ( ) {
+    $(".sticky-nav" ).hide();
+    $(".modal-loader" ).show();
+} ) ;
+
+$ ( document ).ajaxStop ( function ( ) {
+    $(".modal-loader" ).hide();
+    $(".sticky-nav" ).show();
+} ) ;
 
 function loadFriends ( ) {
     appRoutes.controllers.Application.getFriends().ajax({
@@ -16,7 +26,6 @@ function loadFriends ( ) {
 }
 
 function fbFriends ( ) {
-//    showMutualFriends();
     appRoutes.controllers.Application.getFriendsList().ajax({
         success : function ( data, textStatus, jqXHR ) {
             $("#friends-data" ).html(data) ;
@@ -30,7 +39,6 @@ function fbFriends ( ) {
 }
 
 function fbCommon ( ){
-//    showSeeGraph();
     var checkedCheckbox= $("input[name='friendlist']:checked");
     var ids = "";
     for (var i = 0; i < checkedCheckbox.length; i++) {
@@ -59,40 +67,30 @@ function graph ( ) {
             $ ( "#graph" ).html(data) ;
         },
         error : function ( jqXHR, textStatus, errorThrown ) {
-//            $ ( "body" ).append ( "<div>" + textStatus + "</div>" ) ;
+            $ ( "#graph" ).append ( "<div>" + textStatus + "</div>" ) ;
         }
     });
 }
 
-$ ( document ).ajaxStart ( function ( ) {
-    $(".sticky-nav" ).hide();
-    $(".modal-loader" ).show();
-} ) ;
-$ ( document ).ajaxStop ( function ( ) {
-    $(".modal-loader" ).hide();
-    $(".sticky-nav" ).show();
-} ) ;
-
 function getFriends(){
     loadFriends();
-    //fbFriends();
 }
 
 function getMutualFriends(){
     fbCommon();
 }
 
+/* ==================================================
+ Show Functions
+ ================================================== */
+
 function showMutualFriends() {
     $('#get-mutual-friends').removeClass('hidden');
     $('.get-mutual-friends-li').removeClass('hidden');
-    //Not working properly, try to change this
-//    $('#see-graph').addClass('hidden');
     $('.see-graph-li').addClass('hidden');
 }
 
 function showSeeGraph() {
-    //Not working properly, try to change this
-//    $('#see-graph').removeClass('hidden');
     $('.see-graph-li').removeClass('hidden');
 }
 
