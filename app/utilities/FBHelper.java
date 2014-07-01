@@ -10,6 +10,7 @@ import models.AppUser;
 import play.Logger;
 import play.mvc.Http.Context;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -36,7 +37,7 @@ public class FBHelper {
      * @return a fresh instance of facebook4j.facebook object
      */
     private static Facebook getSimpleFBInstance() {
-        Facebook facebook = new FacebookFactory().getInstance();
+        final Facebook facebook = new FacebookFactory().getInstance();
         facebook.setOAuthAppId(appId, appSecret);
         facebook.setOAuthPermissions(permissions);
         return facebook;
@@ -46,7 +47,7 @@ public class FBHelper {
      * @return an instance of facebook4j.facebook object fueled with an Access Token taken from cookies.
      */
     public static Facebook getFBInstance() {
-        Facebook facebook = getSimpleFBInstance();
+        final Facebook facebook = getSimpleFBInstance();
         //String fbToken=play.mvc.Http.Context.current().request().cookies().get("fbToken").value();
         try {
             facebook.setOAuthAccessToken(new AccessToken(Context.current().request().cookies().get("fbToken").value()));
@@ -61,7 +62,7 @@ public class FBHelper {
      * @return a url to redirect user to in order to login.
      */
     public static String getAuthUrl() {
-        Facebook facebook = getFBInstance();
+        final Facebook facebook = getFBInstance();
         return facebook.getOAuthAuthorizationURL(callbackURL);
     }
 
@@ -71,10 +72,10 @@ public class FBHelper {
      *
      * @param oauthCode
      */
-    public static void logIn(String oauthCode) throws FacebookException {
-        Facebook fb = getFBInstance();
+    public static void logIn(@NotNull String oauthCode) throws FacebookException {
+        final Facebook fb = getFBInstance();
         Context.current().response().setCookie("fbToken", fb.getOAuthAccessToken(oauthCode, callbackURL).getToken());
-        facebook4j.User fbUser = fb.users().getMe();
+        final facebook4j.User fbUser = fb.users().getMe();
         AppUser user;
         try {
             Logger.debug("Looking for user in the DB");
@@ -103,7 +104,7 @@ public class FBHelper {
      */
     public static String getAppStatus() {
         String s = "";
-        Facebook fb = getFBInstance();
+        final Facebook fb = getFBInstance();
         AppUser appUser;
         try {
             appUser = AppUser.FIND.byId(Long.decode(Context.current().request().cookies().get("appUser").value()));
@@ -119,8 +120,8 @@ public class FBHelper {
     /**
      * Persists a facebook user entity into DB as application user.
      */
-    public static AppUser createNewUser(User fbUser, Facebook fb) throws FacebookException {
-        AppUser appUser = new AppUser(fbUser.getId(),
+    public static AppUser createNewUser(@NotNull User fbUser,@NotNull Facebook fb) throws FacebookException {
+        final AppUser appUser = new AppUser(fbUser.getId(),
                 fbUser.getName(), fbUser.getUsername(),
                 fbUser.getGender(), fbUser.getLink().toString(),
                 fb.users().getPictureURL(fbUser.getId(), PictureSize.square).toString(),
@@ -140,15 +141,15 @@ public class FBHelper {
             return;
         }
 
-        Facebook fb = getFBInstance();
+        final Facebook fb = getFBInstance();
         //get user's friends into user's profile list
-        AppUser appUser = getAppUser();
-        ResponseList<Friend> fbFriends = fb.friends().getFriends();
+        final AppUser appUser = getAppUser();
+        final ResponseList<Friend> fbFriends = fb.friends().getFriends();
         for (Friend f : fbFriends) {
             Logger.debug("Fetching friend: " + f.getId());
-            User u = fb.users().getUser(f.getId());
+            final User u = fb.users().getUser(f.getId());
             Logger.debug("User entity: " + u.toString());
-            AppFriend appFriend = new AppFriend(
+            final AppFriend appFriend = new AppFriend(
                     appUser,
                     u.getId(),
                     u.getName(),
@@ -162,11 +163,11 @@ public class FBHelper {
         appUser.profile.update();
         //for each user's friend:
         //add:user and mutual friends
-        List<AppFriend> appUserFriends = appUser.profile.friends;
+        final List<AppFriend> appUserFriends = appUser.profile.friends;
 
         for (AppFriend af : appUserFriends) {
             af.friends.add(appUser.profile);
-            ResponseList<Friend> mutualFs = fb.getMutualFriends(af.user_id);
+            final ResponseList<Friend> mutualFs = fb.getMutualFriends(af.user_id);
             for (Friend f : mutualFs) {
                 af.friends.add(AppFriend.FIND.where().eq("appUser", appUser).eq("user_id", f.getId()).findUnique());
             }
@@ -192,8 +193,8 @@ public class FBHelper {
     //Bool Get User
     public static boolean userLogged(){
         try {
-            AppUser u = getAppUser();
-            String s = u.profile.name;
+            final AppUser u = getAppUser();
+            final String s = u.profile.name;
            // Logger.debug("Current user is "+u.profile.name);
             return true;
         } catch (Exception e) {
@@ -239,9 +240,9 @@ public class FBHelper {
      * @param fb_user_id
      * @return a list of common friends of current user and friend with facebook Id = friendId
      */
-    public static List<AppFriend> getCommonFriendsWith(String fb_user_id) throws NullPointerException {
-        List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique().friends;
-        String currentUserFbId = getAppUser().profile.user_id;
+    public static List<AppFriend> getCommonFriendsWith(@NotNull String fb_user_id) throws NullPointerException {
+        final List<AppFriend> cf = AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique().friends;
+        final String currentUserFbId = getAppUser().profile.user_id;
         for (int i=0;i<cf.size();i++){
             if (cf.get(i).user_id.equals(currentUserFbId)) cf.remove(i); //removing current user from the list of common friends
         }
@@ -249,8 +250,8 @@ public class FBHelper {
         return cf;
     }
 
-    public static List<AppFriend> getFriendsfromFbIds(List<String> ids){
-        List<AppFriend> flist = new ArrayList<>();
+    public static List<AppFriend> getFriendsfromFbIds(@NotNull List<String> ids){
+        final List<AppFriend> flist = new ArrayList<>();
         for (String fb_user_id: ids){
             flist.add(AppFriend.FIND.where().eq("user_id", fb_user_id).eq("appUser", getAppUser()).findUnique());
         }
@@ -259,11 +260,11 @@ public class FBHelper {
     }
 
     public static List<String> getCommonFriendIDs(String[] selectedIDs) {
-        List<String> commonFriendIDs = new LinkedList<>();
+        final List<String> commonFriendIDs = new LinkedList<>();
         for (String selectedID : selectedIDs) {
             List<AppFriend> commonFriends = getCommonFriendsWith(selectedID);
             for (AppFriend commonFriend : commonFriends) {
-                String id = String.valueOf(commonFriend.user_id);
+                final String id = String.valueOf(commonFriend.user_id);
                 if(!commonFriendIDs.contains(id)){
                     commonFriendIDs.add(id);
                 }

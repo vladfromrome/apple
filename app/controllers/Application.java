@@ -16,6 +16,7 @@ import views.html.ajaxtest;
 import views.html.friendslistpretty;
 import views.html.graph;
 
+import javax.validation.constraints.NotNull;
 import java.net.URL;
 import java.util.*;
 
@@ -54,7 +55,7 @@ public class Application extends Controller {
         return redirect(FBHelper.getAuthUrl());
     }
 
-    public static Result loginCallback(String oauthCode) {
+    public static Result loginCallback(@NotNull String oauthCode) {
         if (!oauthCode.equals("")) {
             try {
                 FBHelper.logIn(oauthCode);
@@ -100,10 +101,10 @@ public class Application extends Controller {
      *
      * @return Graph data for the friendlist.
      */
-    public static GraphData getGraphData(List<String> friendIds) {
-        List<AppFriend> friendlist = new ArrayList<>();
+    public static GraphData getGraphData(@NotNull List<String> friendIds) {
+        final List<AppFriend> friendlist = new ArrayList<>();
         try {
-            AppFriend userProfile = FBHelper.getAppUser().profile;
+            final AppFriend userProfile = FBHelper.getAppUser().profile;
             if (!friendIds.contains(userProfile.user_id)) {   //add user to the list if he is not there yet.
                 friendlist.add(userProfile);
             }
@@ -111,28 +112,19 @@ public class Application extends Controller {
             return null;
         }
         for (String userId : friendIds) {
-            AppFriend f = FBHelper.getFriend(userId);
+            final AppFriend f = FBHelper.getFriend(userId);
             if (f != null) {
                 friendlist.add(f);
             } else {
                 Logger.debug("Friend " + userId + " not found!");
             }
         }
-        GraphData graphData = new GraphData(friendlist);
+        final GraphData graphData = new GraphData(friendlist);
         return graphData;
     }
 
-    public static Result graph(String ids) {
-//        final List<AppFriend> allFriends = FBHelper.getAllFriends();
-//        allFriends.add(FBHelper.getAppUser().profile);
-//        List<String> q = new LinkedList<>();
-//        q.add("1140600495");
-//        q.add("500454221");
-//        q.add("10217893");
-//        final GraphData graphdata = new GraphData(allFriends);
-
-        String[] selectedIDs = ids.split(",");
-        // final GraphData graphdata = getGraphData(FBHelper.getCommonFriendIDs(selectedIDs));
+    public static Result graph(@NotNull String ids) {
+        final String[] selectedIDs = ids.split(",");
         final GraphData graphdata = getGraphData(Arrays.asList(selectedIDs));
         Logger.debug(graphdata.toString());
         return ok(graph.render(graphdata.getFriendNodes()));
@@ -167,24 +159,19 @@ public class Application extends Controller {
     public static Result fbcommon(String ids) {
         try {
             String[] selectedIDs = ids.split(",");
-            System.out.println("userIDs = " + Arrays.toString(selectedIDs));
+            Logger.info("userIDs = " + Arrays.toString(selectedIDs));
             Map<AppFriend, List<AppFriend>> allCommonFriends = new HashMap<>();
             for (String userID : selectedIDs) {
                 AppFriend friend = AppFriend.FIND.where().eq("user_id", userID).eq("appUser", FBHelper.getAppUser()).findUnique();
-                System.out.println("friend = " + friend);
+                Logger.info("friend = " + friend);
                 List<AppFriend> commonFriends = FBHelper.getCommonFriendsWith(userID);
-                System.out.println("commonFriends = " + commonFriends);
+                Logger.info("commonFriends = " + commonFriends);
                 allCommonFriends.put(friend, commonFriends);
             }
 
-            //AppUser user = FBHelper.getAppUser().profile.friends=null;
-            //return ok();
-            //todo: optimize this method, don't search twice for the friend
-//            AppFriend friend = AppFriend.FIND.where().eq("user_id", ids).eq("appUser", FBHelper.getAppUser()).findUnique();
-
-            return ok(friendslistpretty.render(allCommonFriends));
+           return ok(friendslistpretty.render(allCommonFriends));
         } catch (Exception e) {
-            return ok("<div class='alert alert-error fade in'>No common friends or error:"+e.getMessage()+"</div>");
+            return ok("<div class='alert alert-error fade in'>No common friends </div>");
         }
     }
 
