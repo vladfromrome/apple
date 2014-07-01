@@ -18,7 +18,7 @@ public class ImageController extends Controller {
      */
     public static Result getImage(Long id) {
         try {
-            Image image = Image.FIND.byId(id);
+            final Image image = Image.FIND.byId(id);
             return ok(image.content).as(image.contentType);
         } catch (Exception e) {
             Logger.debug("Error while fetching image "+id+": "+e.toString());
@@ -28,7 +28,7 @@ public class ImageController extends Controller {
 
     public static Result getImage(String id) {
         try {
-            Image image = Image.FIND.byId(Long.valueOf(id));
+            final Image image = Image.FIND.byId(Long.valueOf(id));
             return ok(image.content).as(image.contentType);
         } catch (Exception e) {
             Logger.debug("Error while fetching image "+id+": "+e.toString());

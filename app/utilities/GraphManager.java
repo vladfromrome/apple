@@ -10,11 +10,11 @@ import java.util.List;
  * Author: Vladimir Romanov
  * Date: 07.05.14
  * Time: 10:34
+ * The class is used to test centrality measures computation against various models.
  */
 public class GraphManager {
     public static void main(String args[]) {
-
-        GraphData graphData = new GraphData(modelA());
+        final GraphData graphData = new GraphData(modelA());
         System.out.println("GraphData is ready!");
         System.out.println(graphData.toString());
     }
@@ -24,11 +24,11 @@ public class GraphManager {
      *  A-B-C-D-E
      */
     private static List<AppFriend> modelA(){
-        AppFriend a = new AppFriend("11","Alan","n","g");
-        AppFriend b = new AppFriend("12","Bob","n","g");
-        AppFriend c = new AppFriend("13","Clara","n","g");
-        AppFriend d = new AppFriend("14","Dan","n","g");
-        AppFriend e = new AppFriend("15","Eva","n","g");
+        final AppFriend a = new AppFriend("11","Alan","n","g");
+        final AppFriend b = new AppFriend("12","Bob","n","g");
+        final AppFriend c = new AppFriend("13","Clara","n","g");
+        final AppFriend d = new AppFriend("14","Dan","n","g");
+        final AppFriend e = new AppFriend("15","Eva","n","g");
         //AppFriend f = new AppFriend("16","Fred","n","g"); //to check that pointers to friends out of scope will be ignored.
 
         a.friends.add(b);
@@ -61,13 +61,13 @@ public class GraphManager {
      */
     private static List<AppFriend> modelB(){
 
-        AppFriend a = new AppFriend("11","Alan","n","g");
-        AppFriend b = new AppFriend("12","Bob","n","g");
-        AppFriend c = new AppFriend("13","Clara","n","g");
-        AppFriend d = new AppFriend("14","Dan","n","g");
-        AppFriend e = new AppFriend("15","Eva","n","g");
-        AppFriend f = new AppFriend("16","Fred","n","g");
-        AppFriend g = new AppFriend("17","George","n","g");
+        final AppFriend a = new AppFriend("11","Alan","n","g");
+        final AppFriend b = new AppFriend("12","Bob","n","g");
+        final AppFriend c = new AppFriend("13","Clara","n","g");
+        final AppFriend d = new AppFriend("14","Dan","n","g");
+        final AppFriend e = new AppFriend("15","Eva","n","g");
+        final AppFriend f = new AppFriend("16","Fred","n","g");
+        final AppFriend g = new AppFriend("17","George","n","g");
 
         a.friends.add(b);
         a.friends.add(c);

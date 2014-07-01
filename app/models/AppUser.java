@@ -31,8 +31,7 @@ public class AppUser extends Model{
     public AppUser(String user_id, String name, String nickname, String gender, String link, String profileImageLink, String bigPictureLink) {
         this.profile = new AppFriend(this,user_id,name,nickname,gender,link,profileImageLink);
         this.bigPicture =new Image(bigPictureLink);
-        this.profile.save();
-        this.save();
+        this.profile.save();   //not cascaded due to specifics of initial friendships loading.
     }
 
     public Long getPictureId(){

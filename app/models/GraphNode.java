@@ -34,7 +34,7 @@ public class GraphNode {
         this.gender = gender;
         this.pictureId = pictureId;
 
-        NumberFormat formatter = NumberFormat.getNumberInstance(Locale.UK);
+        final NumberFormat formatter = NumberFormat.getNumberInstance(Locale.UK);
         formatter.setMaximumFractionDigits(2);
 
         this.dc = formatter.format(dc);

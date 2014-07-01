@@ -127,6 +127,7 @@ public class FBHelper {
                 fb.users().getPictureURL(fbUser.getId(), PictureSize.square).toString(),
                 fb.users().getPictureURL(fbUser.getId(), PictureSize.large).toString()
         );
+        appUser.save();
         return appUser;
     }
 

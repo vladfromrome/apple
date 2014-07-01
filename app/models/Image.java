@@ -29,22 +29,22 @@ public class Image extends Model {
 
 
     public static Image saveNewImage(String link){
-        Image img = new Image(link);
+        final Image img = new Image(link);
         img.save();
         img.refresh();
         return img;
     }
 
     public static Long saveAndGetId(String link){
-        Image img = Image.saveNewImage(link);
+        final Image img = Image.saveNewImage(link);
         return img.id;
     }
 
     public Image(String link){
         try {
-            URL url = new URL(link);
-            HttpURLConnection connection = (HttpURLConnection)  url.openConnection();
-            InputStream inputStream =connection.getInputStream();
+            final URL url = new URL(link);
+            final HttpURLConnection connection = (HttpURLConnection)  url.openConnection();
+            final InputStream inputStream =connection.getInputStream();
             ByteArrayOutputStream bOut = new ByteArrayOutputStream();
             if (link.equals("")) {
                 link = "http://dj.ru/user_music/covers/67/608667.jpg";

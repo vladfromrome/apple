@@ -60,7 +60,7 @@ public class GraphData {
                 if (user_ids.contains(a.user_id)){         //ignoring not relevant connecitons
                 connections.add(a.user_id);       }
             }
-            Node n = graph.getNode(f.user_id);
+            final Node n = graph.getNode(f.user_id);
             Float dc = Float.valueOf(n.getAttribute("dc").toString());
             Float bc = Float.valueOf(n.getAttribute("bc").toString())/Float.valueOf("2");
             Float cc = Float.valueOf(n.getAttribute("cc").toString());

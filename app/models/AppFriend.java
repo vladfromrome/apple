@@ -32,7 +32,7 @@ public class AppFriend extends Model implements Comparable<AppFriend>{
             inverseJoinColumns={@JoinColumn(name="connectedfriend_id")})
     public List<AppFriend> friends;
     @ManyToOne
-    public AppUser appUser;   //todo.maybe move the field into a separate table?
+    public AppUser appUser;
     //</editor-fold>
 
     //to be continued...
